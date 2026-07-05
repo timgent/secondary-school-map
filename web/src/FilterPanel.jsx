@@ -5,7 +5,7 @@ import SearchBox from "./SearchBox.jsx";
 
 export default function FilterPanel({
   filters, setFilters, colorBy, setColorBy, year, setYear, count, total,
-  features, onPick,
+  features, onPick, onGoToPlace,
 }) {
   const update = (fn) => setFilters((prev) => { const next = structuredClone(prev); fn(next); return next; });
 
@@ -16,7 +16,7 @@ export default function FilterPanel({
         <b>{count.toLocaleString()}</b> of {total.toLocaleString()} schools shown
       </p>
 
-      <SearchBox features={features} onPick={onPick} />
+      <SearchBox features={features} onPick={onPick} onGoToPlace={onGoToPlace} />
 
       <section>
         <h2>Colour by</h2>

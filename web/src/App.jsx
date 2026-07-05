@@ -14,6 +14,7 @@ export default function App() {
   const [year, setYear] = useState(initial.year);
   const [view, setView] = useState(initial.view);
   const [focus, setFocus] = useState(null);
+  const [place, setPlace] = useState(null);
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState(null);
 
@@ -21,7 +22,13 @@ export default function App() {
   const pickSchool = (feature) => {
     const [lng, lat] = feature.geometry.coordinates;
     setSelected(feature.properties);
-    setFocus({ lng, lat, zoom: 13, n: (focus?.n ?? 0) + 1 });
+    setFocus((prev) => ({ lng, lat, zoom: 13, n: (prev?.n ?? 0) + 1 }));
+  };
+
+  // go to an arbitrary geocoded postcode: drop a marker and fly there
+  const goToPlace = ({ lng, lat, zoom, label }) => {
+    setPlace({ lng, lat, label });
+    setFocus((prev) => ({ lng, lat, zoom, n: (prev?.n ?? 0) + 1 }));
   };
 
   useEffect(() => {
@@ -64,6 +71,7 @@ export default function App() {
         total={features.length}
         features={features}
         onPick={pickSchool}
+        onGoToPlace={goToPlace}
       />
       <div className="mapwrap">
         <SchoolMap
@@ -72,6 +80,7 @@ export default function App() {
           year={year}
           initialView={initial.view}
           focus={focus}
+          place={place}
           onMove={setView}
           onSelect={setSelected}
         />

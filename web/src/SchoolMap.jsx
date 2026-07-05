@@ -23,10 +23,11 @@ const BASEMAP_STYLE = {
 
 const EMPTY = { type: "FeatureCollection", features: [] };
 
-export default function SchoolMap({ data, colorBy, year, initialView, focus, onMove, onSelect }) {
+export default function SchoolMap({ data, colorBy, year, initialView, focus, place, onMove, onSelect }) {
   const container = useRef(null);
   const map = useRef(null);
   const ready = useRef(false);
+  const marker = useRef(null);
   // keep the latest onMove without re-running the init effect
   const onMoveRef = useRef(onMove);
   onMoveRef.current = onMove;
@@ -96,6 +97,16 @@ export default function SchoolMap({ data, colorBy, year, initialView, focus, onM
     if (focus && map.current)
       map.current.flyTo({ center: [focus.lng, focus.lat], zoom: focus.zoom, speed: 1.4 });
   }, [focus?.n]); // eslint-disable-line
+
+  // drop / move a marker for a geocoded postcode ("your home")
+  useEffect(() => {
+    if (!place || !map.current) return;
+    if (!marker.current) marker.current = new maplibregl.Marker({ color: "#1a5fb4" });
+    marker.current
+      .setLngLat([place.lng, place.lat])
+      .setPopup(new maplibregl.Popup({ offset: 24, closeButton: false }).setText(place.label))
+      .addTo(map.current);
+  }, [place]);
 
   return <div ref={container} className="map" />;
 }
