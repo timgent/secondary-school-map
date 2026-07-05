@@ -85,6 +85,21 @@ KS4_SUBGROUP_COLUMNS = {
 # Values in KS4 files meaning "no data" -> NaN.
 KS4_NA_VALUES = {"NA", "SUPP", "NE", "NEW", "LOWCOV", "NP", "", "-"}
 
+# --- DfE pupil absence --------------------------------------------------------
+# Same compare-school-performance download service, filter=PUPILABSENCE. One
+# row per URN with the two DfE headline measures. Latest full year only.
+ABSENCE_ENABLED = True
+ABSENCE_YEAR = "2023-2024"
+ABSENCE_URL_TEMPLATE = (
+    "https://www.compare-school-performance.service.gov.uk/download-data"
+    "?download=true&regions=0&filters=PUPILABSENCE&fileformat=csv&year={year}&meta=false"
+)
+ABSENCE_COLUMNS = {
+    "PERCTOT": "absence_overall",        # overall absence rate (% of sessions missed)
+    "PPERSABS10": "persistent_absence",  # % persistent absentees (miss 10%+ of sessions)
+}
+ABSENCE_METRICS = list(ABSENCE_COLUMNS.values())
+
 # --- selection scope ----------------------------------------------------------
 # State secondary phases. GIAS marks Welsh schools with GOR "Wales (pseudo)".
 SECONDARY_PHASES = {"Secondary", "All-through", "16 plus", "Middle deemed secondary"}
@@ -103,7 +118,10 @@ OUT_GEOJSON = DATA / "schools.geojson"
 # one column per year tag (e.g. progress8_2024) plus a 3-year average
 # (progress8_avg); latest-only stay as-is.
 MULTIYEAR_METRICS = ["progress8", "attainment8"]
-LATEST_METRICS = ["pct_grade5_eng_maths", "ebacc_aps"]
+LATEST_METRICS = ["pct_grade5_eng_maths", "ebacc_aps", *ABSENCE_METRICS]
+# Metrics where a LOWER value is better (absence). Their national percentile is
+# inverted so that, as everywhere else, a higher percentile = a better school.
+LOWER_BETTER_METRICS = set(ABSENCE_METRICS)
 # Prior-attainment band P8 series: multi-year (like MULTIYEAR_METRICS) but
 # display-only, so they get year suffixes + a 3-year average but NO percentiles.
 SUBGROUP_METRICS = ["progress8_low", "progress8_mid", "progress8_high"]

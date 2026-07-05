@@ -23,6 +23,8 @@ export const resolvePctKey = (m, year) =>
 // Sequential green ramp (low -> high) and a diverging ramp for Progress 8.
 const SEQ = ["#f7fcf5", "#c7e9c0", "#74c476", "#31a354", "#006d2c"];
 const DIV = ["#d73027", "#fc8d59", "#fee08b", "#ffffbf", "#d9ef8b", "#91cf60", "#1a9850"];
+// Good -> bad ramp for lower-is-better metrics (absence): green at low values.
+const BAD = ["#1a9850", "#91cf60", "#fee08b", "#fc8d59", "#d73027"];
 
 export const METRICS = [
   {
@@ -73,6 +75,30 @@ export const METRICS = [
     step: 0.1,
     unit: "",
     format: (v) => v.toFixed(2),
+  },
+  {
+    key: "absence_overall",
+    label: "Overall absence",
+    short: "Absence",
+    pctKey: "absence_overall_pct",
+    lowerBetter: true,
+    stops: [[2, BAD[0]], [5, BAD[1]], [8, BAD[2]], [11, BAD[3]], [15, BAD[4]]],
+    range: [0, 20],
+    step: 0.1,
+    unit: "%",
+    format: (v) => `${v.toFixed(1)}%`,
+  },
+  {
+    key: "persistent_absence",
+    label: "Persistent absence",
+    short: "Persistent abs.",
+    pctKey: "persistent_absence_pct",
+    lowerBetter: true,
+    stops: [[5, BAD[0]], [15, BAD[1]], [25, BAD[2]], [35, BAD[3]], [50, BAD[4]]],
+    range: [0, 70],
+    step: 0.1,
+    unit: "%",
+    format: (v) => `${v.toFixed(1)}%`,
   },
 ];
 

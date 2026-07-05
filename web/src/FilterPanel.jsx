@@ -136,6 +136,7 @@ export default function FilterPanel({
 function NumericFilter({ metric, state, update, yearLabel }) {
   const set = (fn) => update((f) => fn(f.numeric[metric.key]));
   const [lo, hi] = metric.range;
+  const cmp = metric.lowerBetter ? "max" : "min"; // value-comparison mode
   return (
     <div className={`numfilter ${state.enabled ? "on" : ""}`}>
       <label className="check">
@@ -156,14 +157,17 @@ function NumericFilter({ metric, state, update, yearLabel }) {
                 s.mode = e.target.value;
                 // reset to a sensible default for the new mode so we never
                 // e.g. carry a "value ≥ 0" over into "top 0%".
-                s.value = s.mode === "top" ? 10 : metric.diverging ? 0 : lo;
+                s.value =
+                  s.mode === "top" ? 10
+                  : metric.lowerBetter ? hi
+                  : metric.diverging ? 0 : lo;
               })
             }
           >
-            <option value="min">value ≥</option>
-            <option value="top">top %</option>
+            <option value={cmp}>{metric.lowerBetter ? "value ≤" : "value ≥"}</option>
+            <option value="top">{metric.lowerBetter ? "best %" : "top %"}</option>
           </select>
-          {state.mode === "min" ? (
+          {state.mode !== "top" ? (
             <>
               <input
                 type="range"
@@ -198,7 +202,7 @@ function NumericFilter({ metric, state, update, yearLabel }) {
                 step={1}
                 value={state.value}
                 unit="%"
-                prefix="top"
+                prefix={metric.lowerBetter ? "best" : "top"}
                 onValue={(v) => set((s) => (s.value = v))}
               />
             </>

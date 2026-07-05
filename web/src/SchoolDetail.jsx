@@ -120,6 +120,20 @@ export default function SchoolDetail({ school: p, year, onClose }) {
         </tbody>
       </table>
 
+      {(p.absence_overall != null || p.persistent_absence != null) && (
+        <div className="absence">
+          <h4>
+            Attendance <span className="muted">(2023–24 · lower is better)</span>
+          </h4>
+          <table>
+            <tbody>
+              <MetricRow p={p} m={METRIC_BY_KEY.absence_overall} />
+              <MetricRow p={p} m={METRIC_BY_KEY.persistent_absence} />
+            </tbody>
+          </table>
+        </div>
+      )}
+
       <Links p={p} />
     </div>
   );

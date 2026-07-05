@@ -81,7 +81,7 @@ export function decodeState(search) {
     const raw = q.get(`f_${m.key}`);
     if (!raw) continue;
     const [mode, val] = raw.split(":");
-    if ((mode === "min" || mode === "top") && val !== "" && !Number.isNaN(+val))
+    if (["min", "max", "top"].includes(mode) && val !== "" && !Number.isNaN(+val))
       filters.numeric[m.key] = { enabled: true, mode, value: +val };
   }
   return { colorBy, year, filters, view };

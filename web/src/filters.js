@@ -60,6 +60,9 @@ export function applyFilters(features, f, year) {
       const val = p[resolveKey(m, year)];
       if (n.mode === "min") {
         if (val == null || val < n.value) return false;
+      } else if (n.mode === "max") {
+        // lower-is-better metrics (absence): keep schools at or below the value
+        if (val == null || val > n.value) return false;
       } else {
         // top X% nationally: percentile must be >= (100 - X)
         const pct = p[resolvePctKey(m, year)];

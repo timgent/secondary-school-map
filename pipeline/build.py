@@ -8,7 +8,7 @@ import json
 
 import pandas as pd
 
-from . import config, gias, ks4, ofsted
+from . import absence, config, gias, ks4, ofsted
 
 
 def _add_year_averages(df: pd.DataFrame) -> pd.DataFrame:
@@ -33,11 +33,26 @@ def _metric_columns() -> list[str]:
 
 
 def _add_percentiles(df: pd.DataFrame) -> pd.DataFrame:
-    """National percentile (0-100, higher = better) for each metric present."""
+    """National percentile (0-100, higher = better) for each metric present.
+
+    For lower-is-better metrics (absence) the rank is inverted so a higher
+    percentile still means a better school, keeping "top X%" semantics uniform.
+    """
     for m in _metric_columns():
         if m in df.columns and df[m].notna().any():
-            df[f"{m}_pct"] = (df[m].rank(pct=True) * 100).round(1)
+            rank = df[m].rank(pct=True)
+            if _base_metric(m) in config.LOWER_BETTER_METRICS:
+                rank = 1 - rank
+            df[f"{m}_pct"] = (rank * 100).round(1)
     return df
+
+
+def _base_metric(col: str) -> str:
+    """Strip a year/avg suffix to get the base metric name (progress8_2024 -> progress8)."""
+    for tag in [*config.KS4_YEAR_TAG.values(), config.AVG_TAG]:
+        if col.endswith(f"_{tag}"):
+            return col[: -(len(tag) + 1)]
+    return col
 
 
 def build() -> pd.DataFrame:
@@ -51,6 +66,10 @@ def build() -> pd.DataFrame:
     ks4_df = ks4.load()
     if ks4_df is not None:
         df = df.merge(ks4_df, on="urn", how="left")
+
+    absence_df = absence.load()
+    if absence_df is not None:
+        df = df.merge(absence_df, on="urn", how="left")
 
     print("[4/4] Averages, percentiles + outputs")
     df = _add_year_averages(df)

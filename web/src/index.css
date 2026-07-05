@@ -127,6 +127,11 @@ select, input[type="range"] { font: inherit; }
 .detail .bandhint { margin: 0 0 8px; font-size: 11px; color: var(--muted); line-height: 1.4; }
 .detail table.bandyears th:first-child { font-weight: 400; color: var(--ink); }
 
+/* attendance / absence */
+.detail .absence { margin-top: 10px; }
+.detail .absence h4 { margin: 0 0 2px; font-size: 13px; }
+.detail .absence h4 .muted { color: var(--muted); font-weight: 400; font-size: 11px; }
+
 /* external links */
 .detail .links { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 10px; }
 .detail .links h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
