@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import { detectPostcode, geocode } from "./geocode.js";
 
 // Client-side search over the loaded schools by name, postcode, or area
 // (local authority). Searches ALL schools, ignoring the active filters, so any
@@ -6,32 +7,6 @@ import { useMemo, useRef, useState } from "react";
 // A typed UK postcode (full or outward, e.g. "N4 3LS" or "N4") also offers a
 // "centre map here" option, geocoded via the free postcodes.io service.
 const MAX = 8;
-
-// UK postcode shapes (compact, no space): full incl. inward, or outward only.
-const FULL_PC = /^[A-Za-z]{1,2}\d[A-Za-z\d]?\d[A-Za-z]{2}$/;
-const OUT_PC = /^[A-Za-z]{1,2}\d[A-Za-z\d]?$/;
-
-function detectPostcode(raw) {
-  const compact = raw.trim().toUpperCase().replace(/\s+/g, "");
-  if (FULL_PC.test(compact))
-    return { label: `${compact.slice(0, -3)} ${compact.slice(-3)}`, compact, outward: false };
-  if (OUT_PC.test(compact)) return { label: compact, compact, outward: true };
-  return null;
-}
-
-async function geocode(pc) {
-  const base = pc.outward ? "outcodes" : "postcodes";
-  const r = await fetch(`https://api.postcodes.io/${base}/${encodeURIComponent(pc.compact)}`);
-  if (!r.ok) return null;
-  const res = (await r.json())?.result;
-  if (!res || res.longitude == null) return null;
-  return {
-    lng: res.longitude,
-    lat: res.latitude,
-    label: pc.label,
-    zoom: pc.outward ? 12 : 15,
-  };
-}
 
 function score(p, q) {
   const name = p.name.toLowerCase();
@@ -72,11 +47,11 @@ export default function SearchBox({ features, onPick, onGoToPlace }) {
   // combined result list: an optional "go to postcode" row, then schools
   const items = useMemo(() => {
     const list = [];
-    const pc = detectPostcode(q);
+    const pc = onGoToPlace ? detectPostcode(q) : null;
     if (pc) list.push({ kind: "place", pc });
     for (const f of searchSchools(features, q)) list.push({ kind: "school", feature: f });
     return list;
-  }, [features, q]);
+  }, [features, q, onGoToPlace]);
 
   const choose = async (item) => {
     if (!item) return;

@@ -25,6 +25,17 @@ average) for "top X%" filtering. ~3,150 schools have a current Progress 8 score
 `web/` renders all schools on a free CARTO basemap, coloured by a chosen metric,
 with a filter panel:
 
+- **Map / List modes.** A toggle switches between the map and a **List** view.
+  List mode asks for a **centre postcode** (geocoded via postcodes.io) and shows
+  the **closest 50 schools** to that point, respecting all active filters. Every
+  column — **distance** plus each performance metric — is **sortable** (click a
+  header; click again to reverse). The centre postcode and sort column live in
+  the URL (`?mode=list&pc=N43LS&sort=progress8:desc`), so a list is shareable.
+- **Compare** (works from either mode; the selection carries across them). Pick
+  up to **5 schools** — a checkbox in List, or "Add to compare" on a school's
+  card — and open a **side-by-side** view lining up funding, type, stage, Ofsted
+  and every metric, highlighting the best value in each row. The selection is in
+  the URL too (`?compare=1&cmp=100123,100456`).
 - **Search** by school name, postcode or area (local authority); picking a
   result flies to the school and opens its card. Typing a **UK postcode** also
   offers "centre map here" (geocoded via postcodes.io) with a marker — handy

@@ -4,6 +4,7 @@ import { STAGES } from "./filters.js";
 import SearchBox from "./SearchBox.jsx";
 
 export default function FilterPanel({
+  mode, setMode, comparing, setComparing, compareFeatures, onToggleCompare, onClearCompare,
   filters, setFilters, colorBy, setColorBy, year, setYear, count, total,
   features, onPick, onGoToPlace,
 }) {
@@ -16,19 +17,52 @@ export default function FilterPanel({
         <b>{count.toLocaleString()}</b> of {total.toLocaleString()} schools shown
       </p>
 
-      <SearchBox features={features} onPick={onPick} onGoToPlace={onGoToPlace} />
+      <div className="modetoggle" role="tablist" aria-label="View mode">
+        <button
+          role="tab"
+          aria-selected={mode === "map"}
+          className={mode === "map" ? "on" : ""}
+          onClick={() => setMode("map")}
+        >
+          Map
+        </button>
+        <button
+          role="tab"
+          aria-selected={mode === "list"}
+          className={mode === "list" ? "on" : ""}
+          onClick={() => setMode("list")}
+        >
+          List
+        </button>
+      </div>
 
-      <section>
-        <h2>Colour by</h2>
-        <select value={colorBy} onChange={(e) => setColorBy(e.target.value)}>
-          {METRICS.map((m) => (
-            <option key={m.key} value={m.key}>{m.label}</option>
-          ))}
-          <option value="ofsted">Ofsted (legacy overall)</option>
-          <option value="funding">Funding (state / independent)</option>
-        </select>
-        <Legend colorBy={colorBy} />
-      </section>
+      <SearchBox
+        features={features}
+        onPick={onPick}
+        onGoToPlace={mode === "map" ? onGoToPlace : undefined}
+      />
+
+      <CompareTray
+        schools={compareFeatures}
+        comparing={comparing}
+        setComparing={setComparing}
+        onToggleCompare={onToggleCompare}
+        onClearCompare={onClearCompare}
+      />
+
+      {mode === "map" && (
+        <section>
+          <h2>Colour by</h2>
+          <select value={colorBy} onChange={(e) => setColorBy(e.target.value)}>
+            {METRICS.map((m) => (
+              <option key={m.key} value={m.key}>{m.label}</option>
+            ))}
+            <option value="ofsted">Ofsted (legacy overall)</option>
+            <option value="funding">Funding (state / independent)</option>
+          </select>
+          <Legend colorBy={colorBy} />
+        </section>
+      )}
 
       <section>
         <h2>Year — Progress 8 &amp; Attainment 8</h2>
@@ -130,6 +164,56 @@ export default function FilterPanel({
         (DfE). Ofsted MI latest. “Top X%” is national.
       </p>
     </aside>
+  );
+}
+
+// Compare tray: chips for the selected schools (max 5), carried across map &
+// list views, with a button to open the side-by-side compare view.
+function CompareTray({ schools, comparing, setComparing, onToggleCompare, onClearCompare }) {
+  const n = schools.length;
+  return (
+    <div className="cmptray">
+      <div className="cmptrayhead">
+        <span className="cmptitle">Compare {n > 0 && <b>({n}/5)</b>}</span>
+        {n > 0 && (
+          <button className="cmpclear" onClick={onClearCompare}>Clear</button>
+        )}
+      </div>
+      {n === 0 ? (
+        <p className="hint">
+          Select schools (checkbox in List, or “Add to compare” on a school card)
+          to compare them side by side.
+        </p>
+      ) : (
+        <>
+          <ul className="cmpchips">
+            {schools.map((f) => (
+              <li key={f.properties.urn}>
+                <span className="cmpname">{f.properties.name}</span>
+                <button
+                  onClick={() => onToggleCompare(f.properties.urn)}
+                  aria-label={`Remove ${f.properties.name} from compare`}
+                >
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button
+            className="cmpgo"
+            disabled={n < 2 || comparing}
+            onClick={() => setComparing(true)}
+          >
+            {comparing ? "Comparing…" : n < 2 ? "Pick 2+ to compare" : `Compare ${n} schools →`}
+          </button>
+          {comparing && (
+            <button className="cmpback" onClick={() => setComparing(false)}>
+              ← Back to {"" /* returns to map/list */}view
+            </button>
+          )}
+        </>
+      )}
+    </div>
   );
 }
 
