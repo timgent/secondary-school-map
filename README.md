@@ -14,7 +14,8 @@ local jobs). See the plan and progress below.
 |--------|----------|--------|
 | **GIAS** (Get Information About Schools) | registry, location, type, phase, funding, selective/faith flags, age range, LA/region | ✅ live |
 | **Ofsted MI** (state-funded schools) | legacy 4-point overall grade + 2025 report-card grades | ✅ live |
-| **DfE KS4** (GCSE) | Progress 8 & Attainment 8 for **3 years** (2021-22…2023-24) + 3-yr average; P8 by prior-attainment band; %5+ Eng&Maths, EBacc APS | ✅ live |
+| **DfE KS4** (GCSE) | Progress 8 & Attainment 8 for **3 years** (2021-22…2023-24) + 3-yr average; P8 by prior-attainment band (per year + average); %5+ Eng&Maths, EBacc APS | ✅ live |
+| **DfE pupil absence** | overall absence rate + persistent-absence rate (latest year) | ✅ live |
 
 National percentiles are computed for every numeric metric (and the 3-year
 average) for "top X%" filtering. ~3,150 schools have a current Progress 8 score
@@ -24,21 +25,30 @@ average) for "top X%" filtering. ~3,150 schools have a current Progress 8 score
 `web/` renders all schools on a free CARTO basemap, coloured by a chosen metric,
 with a filter panel:
 
+- **Search** by school name, postcode or area (local authority); picking a
+  result flies to the school and opens its card. Typing a **UK postcode** also
+  offers "centre map here" (geocoded via postcodes.io) with a marker — handy
+  for locating your own home.
 - **Colour by** Progress 8 (diverging around 0), Attainment 8, %5+ Eng&Maths,
-  EBacc APS, Ofsted grade, or funding — with a live legend.
+  EBacc APS, **overall / persistent absence**, Ofsted grade, or funding — with
+  a live legend.
 - **Year selector** for Progress 8 / Attainment 8: any of the 3 years or the
   **3-year average**, applied to colouring and filters.
 - **Performance filters** per metric, each toggleable between "value ≥" and
   "top X%" (national percentile), with a synced slider **and number box**.
+  Absence (lower-is-better) uses "value ≤" / "best %" instead.
 - **Ofsted** (legacy grades), **funding** (state / independent), **age range /
   stage** (incl. flagging *16–19 sixth-form-only*), **selective**, and **faith**
   filters.
 - **Click a school** for a detail card: multi-year P8/A8 with per-year
   percentiles + 3-yr average, P8 confidence interval, **Progress 8 by prior-
-  attainment band** (lower/middle/higher starters), funding, age/stage, and
-  Ofsted (legacy or 2025 report-card).
-- **Shareable links**: the colour dimension, year and all filters live in the
-  URL (`?color=…&year=…&f_progress8=top:10`), restored on load.
+  attainment band** (lower/middle/higher starters, per year + average),
+  **attendance** (overall + persistent absence), funding, age/stage, Ofsted
+  (legacy or 2025 report-card), and **external links** (school website, DfE
+  Compare-performance, Ofsted reports, GIAS record, Google Maps).
+- **Shareable links**: the colour dimension, year, map centre/zoom and all
+  filters live in the URL (`?color=…&year=…&lat=…&lng=…&z=…&f_progress8=top:10`),
+  restored on load.
 
 Milestones 3 (commute / house-price / catchment) and 4 (jobs enrichment) are
 not started. A fuller "interpretation-first" KS4 UX (disadvantaged-pupil gap,
