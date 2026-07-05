@@ -6,11 +6,26 @@ import { defaultFilters, STAGES } from "./filters.js";
 import { METRICS, LATEST_YEAR } from "./metrics.js";
 
 const DEFAULT_COLOR = "progress8";
+// Initial map view (roughly centred on England), also the URL default so a
+// pristine link stays clean until the user pans/zooms.
+export const DEFAULT_VIEW = { lng: -1.5, lat: 52.6, zoom: 5.6 };
 
-export function encodeState({ colorBy, year, filters }) {
+const round = (n, dp) => Number(n.toFixed(dp));
+
+export function encodeState({ colorBy, year, filters, view }) {
   const q = new URLSearchParams();
   if (colorBy !== DEFAULT_COLOR) q.set("color", colorBy);
   if (year !== LATEST_YEAR) q.set("year", year);
+
+  if (view) {
+    const lat = round(view.lat, 4), lng = round(view.lng, 4), z = round(view.zoom, 2);
+    const d = DEFAULT_VIEW;
+    if (lat !== d.lat || lng !== d.lng || z !== d.zoom) {
+      q.set("lat", lat);
+      q.set("lng", lng);
+      q.set("z", z);
+    }
+  }
 
   const ofsted = Object.entries(filters.ofsted).filter(([, v]) => v).map(([k]) => k);
   if (ofsted.length) q.set("ofsted", ofsted.join(","));
@@ -37,6 +52,14 @@ export function decodeState(search) {
   const colorBy = q.get("color") || DEFAULT_COLOR;
   const year = q.get("year") || LATEST_YEAR;
 
+  const lat = parseFloat(q.get("lat"));
+  const lng = parseFloat(q.get("lng"));
+  const zoom = parseFloat(q.get("z"));
+  const view =
+    Number.isFinite(lat) && Number.isFinite(lng) && Number.isFinite(zoom)
+      ? { lat, lng, zoom }
+      : { ...DEFAULT_VIEW };
+
   const ofsted = q.get("ofsted");
   if (ofsted) for (const g of ofsted.split(",")) if (g in filters.ofsted) filters.ofsted[g] = true;
   if (q.get("unrated") === "0") filters.includeUnrated = false;
@@ -61,5 +84,5 @@ export function decodeState(search) {
     if ((mode === "min" || mode === "top") && val !== "" && !Number.isNaN(+val))
       filters.numeric[m.key] = { enabled: true, mode, value: +val };
   }
-  return { colorBy, year, filters };
+  return { colorBy, year, filters, view };
 }

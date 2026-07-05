@@ -23,10 +23,13 @@ const BASEMAP_STYLE = {
 
 const EMPTY = { type: "FeatureCollection", features: [] };
 
-export default function SchoolMap({ data, colorBy, year, onSelect }) {
+export default function SchoolMap({ data, colorBy, year, initialView, onMove, onSelect }) {
   const container = useRef(null);
   const map = useRef(null);
   const ready = useRef(false);
+  // keep the latest onMove without re-running the init effect
+  const onMoveRef = useRef(onMove);
+  onMoveRef.current = onMove;
 
   // init once
   useEffect(() => {
@@ -34,12 +37,18 @@ export default function SchoolMap({ data, colorBy, year, onSelect }) {
     const m = new maplibregl.Map({
       container: container.current,
       style: BASEMAP_STYLE,
-      center: [-1.5, 52.6], // roughly centre of England
-      zoom: 5.6,
+      center: [initialView.lng, initialView.lat],
+      zoom: initialView.zoom,
       maxZoom: 15,
     });
     map.current = m;
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+
+    // sync pan/zoom back up so the URL stays shareable
+    m.on("moveend", () => {
+      const c = m.getCenter();
+      onMoveRef.current?.({ lng: c.lng, lat: c.lat, zoom: m.getZoom() });
+    });
 
     m.on("load", () => {
       m.addSource("schools", { type: "geojson", data: EMPTY });

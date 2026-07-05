@@ -12,6 +12,7 @@ export default function App() {
   const [filters, setFilters] = useState(initial.filters);
   const [colorBy, setColorBy] = useState(initial.colorBy);
   const [year, setYear] = useState(initial.year);
+  const [view, setView] = useState(initial.view);
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState(null);
 
@@ -24,9 +25,9 @@ export default function App() {
 
   // keep the URL in sync so the current view is shareable
   useEffect(() => {
-    const qs = encodeState({ colorBy, year, filters });
+    const qs = encodeState({ colorBy, year, filters, view });
     window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname);
-  }, [colorBy, year, filters]);
+  }, [colorBy, year, filters, view]);
 
   const filtered = useMemo(() => {
     if (!features) return null;
@@ -55,7 +56,14 @@ export default function App() {
         total={features.length}
       />
       <div className="mapwrap">
-        <SchoolMap data={filtered} colorBy={colorBy} year={year} onSelect={setSelected} />
+        <SchoolMap
+          data={filtered}
+          colorBy={colorBy}
+          year={year}
+          initialView={initial.view}
+          onMove={setView}
+          onSelect={setSelected}
+        />
         {selected && (
           <SchoolDetail school={selected} year={year} onClose={() => setSelected(null)} />
         )}
