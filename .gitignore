@@ -1,7 +1,12 @@
 # Data (downloaded / generated)
-data/raw/
+data/raw/*
 data/*.parquet
 data/*.geojson
+# ...but keep the compare-school-performance sources (KS4 + absence) cached
+# in-repo: GitHub Actions runner IPs get a 403 from that WAF, so CI can't
+# download them. GIAS + Ofsted still download fresh each build.
+!data/raw/ks4_*.csv
+!data/raw/absence_*.csv
 .venv/
 __pycache__/
 *.pyc
