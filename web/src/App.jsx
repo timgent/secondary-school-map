@@ -25,7 +25,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetch("/schools.geojson")
+    fetch(`${import.meta.env.BASE_URL}schools.geojson`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then((fc) => setFeatures(fc.features))
       .catch((e) => setError(e.message));
