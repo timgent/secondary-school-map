@@ -66,6 +66,13 @@ select, input[type="range"] { font: inherit; }
 .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 10px; }
 .legitem { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
 
+.hint { font-size: 11px; color: var(--muted); margin: 6px 0 0; line-height: 1.4; }
+.yeartag {
+  margin-left: auto; font-size: 10px; color: var(--accent); background: #eef3fb;
+  padding: 1px 6px; border-radius: 4px; font-weight: 600;
+}
+.numfilter .check { justify-content: flex-start; gap: 7px; }
+
 .foot { font-size: 11px; color: var(--muted); margin-top: 18px; line-height: 1.5; }
 
 /* ---- detail card ---- */
@@ -79,13 +86,26 @@ select, input[type="range"] { font: inherit; }
   font-size: 22px; line-height: 1; cursor: pointer; color: var(--muted);
 }
 .detail h3 { margin: 0 6px 2px 0; font-size: 16px; padding-right: 16px; }
-.detail .sub { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
+.detail .sub { margin: 0 0 4px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.detail .stage { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
 .detail table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.detail th { text-align: left; font-weight: 500; color: var(--muted); padding: 5px 0; vertical-align: top; width: 46%; }
+.detail th { text-align: left; font-weight: 500; color: var(--muted); padding: 5px 0; vertical-align: top; }
+.detail table:not(.years) th { width: 46%; }
 .detail td { text-align: right; padding: 5px 0; font-variant-numeric: tabular-nums; }
 .detail .pct { color: var(--muted); font-size: 11px; }
+
+/* multi-year table */
+.detail table.years { margin-bottom: 8px; }
+.detail table.years thead th { text-align: right; font-size: 11px; color: var(--muted); padding-bottom: 4px; }
+.detail table.years td { vertical-align: top; padding: 5px 0 5px 8px; }
+.detail table.years .sel { color: var(--ink); font-weight: 600; }
+.detail table.years thead th.sel { color: var(--accent); }
+.detail .ci { font-size: 11px; color: var(--muted); margin: 0 0 12px; }
+
 .detail .tag {
   display: inline-block; background: #eef3fb; color: var(--accent);
-  font-size: 10px; padding: 1px 6px; border-radius: 4px;
+  font-size: 10px; padding: 1px 6px; border-radius: 4px; font-weight: 600;
 }
+.detail .tag.indep { background: #fdecec; color: #c0392b; }
+.detail .tag.state { background: #eaf1fb; color: #2c6fb0; }
 .maplibregl-popup { max-width: 260px; }

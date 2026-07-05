@@ -3,11 +3,13 @@ import SchoolMap from "./SchoolMap.jsx";
 import FilterPanel from "./FilterPanel.jsx";
 import SchoolDetail from "./SchoolDetail.jsx";
 import { defaultFilters, applyFilters } from "./filters.js";
+import { LATEST_YEAR } from "./metrics.js";
 
 export default function App() {
   const [features, setFeatures] = useState(null);
   const [filters, setFilters] = useState(defaultFilters);
   const [colorBy, setColorBy] = useState("progress8");
+  const [year, setYear] = useState(LATEST_YEAR);
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState(null);
 
@@ -20,8 +22,8 @@ export default function App() {
 
   const filtered = useMemo(() => {
     if (!features) return null;
-    return { type: "FeatureCollection", features: applyFilters(features, filters) };
-  }, [features, filters]);
+    return { type: "FeatureCollection", features: applyFilters(features, filters, year) };
+  }, [features, filters, year]);
 
   if (error)
     return (
@@ -39,12 +41,16 @@ export default function App() {
         setFilters={setFilters}
         colorBy={colorBy}
         setColorBy={setColorBy}
+        year={year}
+        setYear={setYear}
         count={filtered.features.length}
         total={features.length}
       />
       <div className="mapwrap">
-        <SchoolMap data={filtered} colorBy={colorBy} onSelect={setSelected} />
-        {selected && <SchoolDetail school={selected} onClose={() => setSelected(null)} />}
+        <SchoolMap data={filtered} colorBy={colorBy} year={year} onSelect={setSelected} />
+        {selected && (
+          <SchoolDetail school={selected} year={year} onClose={() => setSelected(null)} />
+        )}
       </div>
     </div>
   );

@@ -11,9 +11,18 @@ import pandas as pd
 from . import config, gias, ks4, ofsted
 
 
+def _metric_columns() -> list[str]:
+    """All numeric metric columns we want national percentiles for."""
+    cols = list(config.LATEST_METRICS)
+    for base in config.MULTIYEAR_METRICS:
+        for tag in config.KS4_YEAR_TAG.values():
+            cols.append(f"{base}_{tag}")
+    return cols
+
+
 def _add_percentiles(df: pd.DataFrame) -> pd.DataFrame:
     """National percentile (0-100, higher = better) for each metric present."""
-    for m in config.METRICS:
+    for m in _metric_columns():
         if m in df.columns and df[m].notna().any():
             df[f"{m}_pct"] = (df[m].rank(pct=True) * 100).round(1)
     return df
@@ -41,12 +50,19 @@ def build() -> pd.DataFrame:
     return df
 
 
+def _clean(v):
+    """Coerce numpy / pandas scalars to plain JSON-serialisable Python values."""
+    if pd.isna(v):
+        return None
+    return v.item() if hasattr(v, "item") else v
+
+
 def _write_geojson(df: pd.DataFrame) -> None:
     features = []
     for row in df.itertuples(index=False):
         d = row._asdict()
         lon, lat = d.pop("lon"), d.pop("lat")
-        props = {k: (None if pd.isna(v) else v) for k, v in d.items()}
+        props = {k: _clean(v) for k, v in d.items()}
         features.append({
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [lon, lat]},
@@ -70,14 +86,24 @@ def _summary(df: pd.DataFrame) -> None:
     if "ofsted_achievement" in df.columns:
         print("\n2025 report-card Achievement grade:")
         print(df["ofsted_achievement"].value_counts(dropna=False).to_string())
+    print("\nfunding:")
+    print(df["funding"].value_counts(dropna=False).to_string())
+    print("\nstage (age coverage):")
+    print(df["stage"].value_counts(dropna=False).to_string())
     print(f"\nselective (grammar) schools: {int(df['selective'].sum())}")
     print(f"faith schools: {int(df['has_faith'].sum())}")
-    if "progress8" in df.columns and df["progress8"].notna().any():
-        print("\ntop 10 by Progress 8:")
-        cols = ["name", "local_authority", "progress8", "progress8_pct"]
-        print(df.nlargest(10, "progress8")[cols].to_string(index=False))
-    else:
-        print("\n(Progress 8 not loaded — set config.KS4_SOURCE to enable)")
+
+    latest_tag = config.KS4_YEAR_TAG[config.KS4_LATEST_YEAR]
+    p8_cols = [f"progress8_{t}" for t in config.KS4_YEAR_TAG.values()]
+    print("\nProgress 8 coverage by year:")
+    for c in p8_cols:
+        if c in df.columns:
+            print(f"  {c}: {int(df[c].notna().sum())} schools")
+    latest_p8 = f"progress8_{latest_tag}"
+    if latest_p8 in df.columns and df[latest_p8].notna().any():
+        print(f"\ntop 10 by Progress 8 ({config.KS4_LATEST_YEAR}):")
+        cols = ["name", "local_authority", "funding", latest_p8, f"{latest_p8}_pct"]
+        print(df.nlargest(10, latest_p8)[cols].to_string(index=False))
 
 
 if __name__ == "__main__":

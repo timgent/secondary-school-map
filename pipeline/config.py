@@ -45,37 +45,52 @@ OFSTED_ENCODING = "cp1252"
 #
 # YEAR CHOICE: Progress 8 needs a KS2 baseline. The 2024/25 GCSE cohort's KS2
 # was summer 2020 (SATs cancelled for COVID), so P8 is "NA" for 2024-2025.
-# 2023-2024 is the latest year with real Progress 8, so that is the default.
-KS4_YEAR = "2023-2024"
+# We pull the 3 most recent years that HAVE Progress 8. The years before that
+# (2020-21, 2019-20) were not published due to COVID, so 2021-22 is as far back
+# as a continuous run goes.
+KS4_YEARS = ["2023-2024", "2022-2023", "2021-2022"]  # newest first
+# Short tag per year = the summer GCSEs were sat (academic-year end).
+KS4_YEAR_TAG = {y: y.split("-")[1] for y in KS4_YEARS}  # "2023-2024" -> "2024"
+KS4_LATEST_YEAR = KS4_YEARS[0]
 KS4_URL_TEMPLATE = (
     "https://www.compare-school-performance.service.gov.uk/download-data"
     "?download=true&regions=0&filters=KS4&fileformat=csv&year={year}&meta=false"
 )
-KS4_SOURCE: str | None = KS4_URL_TEMPLATE.format(year=KS4_YEAR)
+KS4_ENABLED = True                  # set False to build without any KS4 data
 KS4_ENCODING = "utf-8-sig"          # this file is UTF-8 w/ BOM (unlike GIAS/Ofsted)
-KS4_RECTYPE = "1"                    # 1 = mainstream school row (2/4 = LA/national)
+KS4_RECTYPE = "1"                   # 1 = mainstream school row (2/4 = LA/national)
 
-# Columns we pull from the DfE KS4 "final" file (schema is stable year to year).
-KS4_COLUMNS = {
-    "URN": "urn",
+# Progress 8 & Attainment 8 are pulled for EVERY year in KS4_YEARS; columns get
+# a year suffix, e.g. progress8_2024, attainment8_2023.
+KS4_MULTIYEAR_COLUMNS = {
     "P8MEA": "progress8",              # Progress 8 measure
     "P8CILOW": "progress8_ci_low",     # lower 95% confidence bound
     "P8CIUPP": "progress8_ci_high",    # upper 95% confidence bound
     "ATT8SCR": "attainment8",          # Attainment 8 score
+}
+# These are pulled for the LATEST year only (unsuffixed).
+KS4_LATEST_COLUMNS = {
     "PTL2BASICS_95": "pct_grade5_eng_maths",  # % achieving grade 5+ in Eng & Maths
-    "EBACCAPS": "ebacc_aps",           # EBacc average point score
+    "EBACCAPS": "ebacc_aps",                  # EBacc average point score
 }
 # Values in KS4 files meaning "no data" -> NaN.
 KS4_NA_VALUES = {"NA", "SUPP", "NE", "NEW", "LOWCOV", "NP", "", "-"}
 
-# --- selection scope (v1) -----------------------------------------------------
-# England secondary phases. GIAS marks Welsh schools with GOR "Wales (pseudo)".
+# --- selection scope ----------------------------------------------------------
+# State secondary phases. GIAS marks Welsh schools with GOR "Wales (pseudo)".
 SECONDARY_PHASES = {"Secondary", "All-through", "16 plus", "Middle deemed secondary"}
 EXCLUDE_GOR = {"Wales (pseudo)", "Not Applicable"}
+# Independent (private/fee-paying) schools all have phase "Not applicable" in
+# GIAS, so we include them separately when their age range covers secondary.
+INDEPENDENT_TYPE_GROUP = "Independent schools"
+INDEPENDENT_AGE_LOW_MAX = 16       # admits pupils aged <= 16, and ...
+INDEPENDENT_AGE_HIGH_MIN = 15      # ... teaches up to at least 15
 
 # --- outputs ------------------------------------------------------------------
 OUT_PARQUET = DATA / "schools.parquet"
 OUT_GEOJSON = DATA / "schools.geojson"
 
-# Numeric metrics we compute national percentiles for (higher = better for all).
-METRICS = ["progress8", "attainment8", "pct_grade5_eng_maths", "ebacc_aps"]
+# Base metrics for national-percentile computation. Multi-year ones expand to
+# one column per year tag (e.g. progress8_2024); latest-only stay as-is.
+MULTIYEAR_METRICS = ["progress8", "attainment8"]
+LATEST_METRICS = ["pct_grade5_eng_maths", "ebacc_aps"]

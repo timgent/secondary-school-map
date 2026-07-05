@@ -23,7 +23,7 @@ const BASEMAP_STYLE = {
 
 const EMPTY = { type: "FeatureCollection", features: [] };
 
-export default function SchoolMap({ data, colorBy, onSelect }) {
+export default function SchoolMap({ data, colorBy, year, onSelect }) {
   const container = useRef(null);
   const map = useRef(null);
   const ready = useRef(false);
@@ -49,7 +49,7 @@ export default function SchoolMap({ data, colorBy, onSelect }) {
         source: "schools",
         paint: {
           "circle-radius": ["interpolate", ["linear"], ["zoom"], 5, 3, 10, 6, 14, 10],
-          "circle-color": colorExpression(colorBy),
+          "circle-color": colorExpression(colorBy, year),
           "circle-stroke-width": 0.6,
           "circle-stroke-color": "#33333366",
           "circle-opacity": 0.9,
@@ -76,11 +76,11 @@ export default function SchoolMap({ data, colorBy, onSelect }) {
     if (ready.current && data) map.current.getSource("schools").setData(data);
   }, [data]);
 
-  // update colour dimension
+  // update colour dimension (and active year for multi-year metrics)
   useEffect(() => {
     if (ready.current)
-      map.current.setPaintProperty("schools", "circle-color", colorExpression(colorBy));
-  }, [colorBy]);
+      map.current.setPaintProperty("schools", "circle-color", colorExpression(colorBy, year));
+  }, [colorBy, year]);
 
   return <div ref={container} className="map" />;
 }

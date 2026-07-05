@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { METRICS, OFSTED_LEGACY, legendFor } from "./metrics.js";
+import { METRICS, OFSTED_LEGACY, YEARS, legendFor, yearLabel } from "./metrics.js";
+import { STAGES } from "./filters.js";
 
-export default function FilterPanel({ filters, setFilters, colorBy, setColorBy, count, total }) {
+export default function FilterPanel({
+  filters, setFilters, colorBy, setColorBy, year, setYear, count, total,
+}) {
   const update = (fn) => setFilters((prev) => { const next = structuredClone(prev); fn(next); return next; });
 
   return (
@@ -18,14 +21,31 @@ export default function FilterPanel({ filters, setFilters, colorBy, setColorBy, 
             <option key={m.key} value={m.key}>{m.label}</option>
           ))}
           <option value="ofsted">Ofsted (legacy overall)</option>
+          <option value="funding">Funding (state / independent)</option>
         </select>
         <Legend colorBy={colorBy} />
       </section>
 
       <section>
+        <h2>Year — Progress 8 &amp; Attainment 8</h2>
+        <select value={year} onChange={(e) => setYear(e.target.value)}>
+          {YEARS.map((y) => (
+            <option key={y.tag} value={y.tag}>{y.label}</option>
+          ))}
+        </select>
+        <p className="hint">Applies to Progress 8 / Attainment 8 colouring &amp; filters.</p>
+      </section>
+
+      <section>
         <h2>Performance filters</h2>
         {METRICS.map((m) => (
-          <NumericFilter key={m.key} metric={m} state={filters.numeric[m.key]} update={update} />
+          <NumericFilter
+            key={m.key}
+            metric={m}
+            state={filters.numeric[m.key]}
+            update={update}
+            yearLabel={m.multiYear ? yearLabel(year) : null}
+          />
         ))}
       </section>
 
@@ -53,14 +73,40 @@ export default function FilterPanel({ filters, setFilters, colorBy, setColorBy, 
       </section>
 
       <section>
+        <h2>Age range covered</h2>
+        {STAGES.map((s) => (
+          <label key={s} className="check">
+            <input
+              type="checkbox"
+              checked={filters.stages[s]}
+              onChange={(e) => update((f) => (f.stages[s] = e.target.checked))}
+            />
+            {s}
+          </label>
+        ))}
+        <p className="hint">Tick none to include all. “16–19 only” = sixth-form / college.</p>
+      </section>
+
+      <section>
         <h2>School type</h2>
+        <label className="row">
+          Funding:
+          <select
+            value={filters.funding}
+            onChange={(e) => update((f) => (f.funding = e.target.value))}
+          >
+            <option value="all">All</option>
+            <option value="state">State-funded only</option>
+            <option value="independent">Independent (private) only</option>
+          </select>
+        </label>
         <label className="check">
           <input
             type="checkbox"
             checked={filters.selectiveOnly}
             onChange={(e) => update((f) => (f.selectiveOnly = e.target.checked))}
           />
-          Selective (grammar) only
+          Selective admissions only
         </label>
         <label className="row">
           Faith:
@@ -76,13 +122,14 @@ export default function FilterPanel({ filters, setFilters, colorBy, setColorBy, 
       </section>
 
       <p className="foot">
-        Progress 8 & GCSE data 2023–24 (DfE). Ofsted MI latest. “Top X%” is national.
+        Progress 8 &amp; Attainment 8 for 2021–22 to 2023–24; other GCSE data 2023–24
+        (DfE). Ofsted MI latest. “Top X%” is national.
       </p>
     </aside>
   );
 }
 
-function NumericFilter({ metric, state, update }) {
+function NumericFilter({ metric, state, update, yearLabel }) {
   const set = (fn) => update((f) => fn(f.numeric[metric.key]));
   const [lo, hi] = metric.range;
   return (
@@ -94,6 +141,7 @@ function NumericFilter({ metric, state, update }) {
           onChange={(e) => set((s) => (s.enabled = e.target.checked))}
         />
         <b>{metric.label}</b>
+        {yearLabel && <span className="yeartag">{yearLabel}</span>}
       </label>
       {state.enabled && (
         <div className="numctl">

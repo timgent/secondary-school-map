@@ -1,35 +1,26 @@
-"""Load DfE KS4 (GCSE) performance -> Progress 8, Attainment 8, etc. per URN.
+"""Load DfE KS4 (GCSE) performance for several years -> per-URN columns.
 
-Source (``config.KS4_SOURCE``) may be:
-  * the direct compare-school-performance download URL (default), or
-  * a path to a downloaded `*_ks4final.csv` / KS4 zip.
-
-Set ``config.KS4_SOURCE = None`` to build without Progress 8.
+Progress 8 and Attainment 8 are pulled for every year in ``config.KS4_YEARS``
+(suffixed by year tag, e.g. ``progress8_2024``); % grade 5+ Eng&Maths and EBacc
+APS are pulled for the latest year only. Set ``config.KS4_ENABLED = False`` to
+skip KS4 entirely.
 """
 from __future__ import annotations
-
-import io
-import zipfile
-from pathlib import Path
 
 import pandas as pd
 
 from . import config
 
 
-def _read_source(src: str) -> pd.DataFrame:
-    enc = config.KS4_ENCODING
-    if src.startswith("http"):
-        from .download import fetch
-        src = str(fetch(src, f"ks4_{config.KS4_YEAR}.csv"))
-    p = Path(src)
-    if p.suffix == ".zip":
-        with zipfile.ZipFile(p) as z:
-            name = next(n for n in z.namelist() if n.lower().endswith("ks4final.csv"))
-            with z.open(name) as fh:
-                return pd.read_csv(io.BytesIO(fh.read()), dtype=str,
-                                   encoding=enc, low_memory=False)
-    return pd.read_csv(p, dtype=str, encoding=enc, low_memory=False)
+def _read_year(year: str) -> pd.DataFrame:
+    from .download import fetch
+    url = config.KS4_URL_TEMPLATE.format(year=year)
+    path = fetch(url, f"ks4_{year}.csv")
+    df = pd.read_csv(path, dtype=str, encoding=config.KS4_ENCODING, low_memory=False)
+    df.columns = [c.strip() for c in df.columns]
+    if "RECTYPE" in df.columns:
+        df = df[df["RECTYPE"].astype(str).str.strip() == config.KS4_RECTYPE]
+    return df
 
 
 def _num(s: pd.Series) -> pd.Series:
@@ -38,29 +29,34 @@ def _num(s: pd.Series) -> pd.Series:
     return pd.to_numeric(cleaned, errors="coerce")
 
 
-def load() -> pd.DataFrame | None:
-    if not config.KS4_SOURCE:
-        print("  KS4: no source configured (config.KS4_SOURCE) -> skipping "
-              "Progress 8 / Attainment 8")
-        return None
-    df = _read_source(config.KS4_SOURCE)
-    df.columns = [c.strip() for c in df.columns]
-
-    # keep mainstream school rows only (drop LA / national aggregate rows)
-    if "RECTYPE" in df.columns:
-        df = df[df["RECTYPE"].astype(str).str.strip() == config.KS4_RECTYPE]
-
-    present = {k: v for k, v in config.KS4_COLUMNS.items() if k in df.columns}
-    if "URN" not in present:
-        raise RuntimeError("KS4 file has no URN column")
-    out = df[list(present)].rename(columns=present)
-    out["urn"] = out["urn"].astype(str).str.strip()
-    for col in out.columns:
-        if col != "urn":
-            out[col] = _num(out[col])
-
-    out = out[out["urn"].str.isdigit()].drop_duplicates("urn")
-    n_p8 = out["progress8"].notna().sum() if "progress8" in out.columns else 0
-    print(f"  KS4 ({config.KS4_YEAR}): {len(out)} schools, "
-          f"{n_p8} with Progress 8, columns: {list(out.columns)}")
+def _extract(df: pd.DataFrame, colmap: dict[str, str], suffix: str = "") -> pd.DataFrame:
+    present = {k: v for k, v in colmap.items() if k in df.columns}
+    out = pd.DataFrame({"urn": df["URN"].astype(str).str.strip()})
+    for src, tidy in present.items():
+        out[f"{tidy}{suffix}"] = _num(df[src])
     return out
+
+
+def load() -> pd.DataFrame | None:
+    if not config.KS4_ENABLED:
+        print("  KS4: disabled (config.KS4_ENABLED) -> skipping performance data")
+        return None
+
+    merged: pd.DataFrame | None = None
+    for i, year in enumerate(config.KS4_YEARS):
+        tag = config.KS4_YEAR_TAG[year]
+        raw = _read_year(year)
+
+        # Progress 8 / Attainment 8 for this year (suffixed).
+        part = _extract(raw, config.KS4_MULTIYEAR_COLUMNS, suffix=f"_{tag}")
+        # For the latest year, also pull the single-year metrics (unsuffixed).
+        if i == 0:
+            latest = _extract(raw, config.KS4_LATEST_COLUMNS)
+            part = part.merge(latest, on="urn", how="outer")
+
+        part = part[part["urn"].str.isdigit()].drop_duplicates("urn")
+        n_p8 = part[f"progress8_{tag}"].notna().sum()
+        print(f"  KS4 {year} (tag {tag}): {len(part)} schools, {n_p8} with Progress 8")
+        merged = part if merged is None else merged.merge(part, on="urn", how="outer")
+
+    return merged

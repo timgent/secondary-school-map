@@ -9,11 +9,27 @@ from . import config
 # GIAS Easting/Northing are British National Grid (EPSG:27700).
 _TRANSFORMER = Transformer.from_crs(27700, 4326, always_xy=True)
 
+
+def _stage(low, high) -> str:
+    """Coarse age-coverage bucket, from statutory low/high ages."""
+    import math
+    if low is None or high is None or (isinstance(low, float) and math.isnan(low)):
+        return "Unknown"
+    low, high = int(low), int(high)
+    if low >= 16:
+        return "16–19 only (sixth form)"
+    if low <= 7 and high >= 16:
+        return "All-through (primary + secondary)"
+    if high >= 17:
+        return "Secondary with sixth form"
+    return "Secondary (no sixth form)"
+
 _COLS = {
     "URN": "urn",
     "EstablishmentName": "name",
     "PhaseOfEducation (name)": "phase",
     "TypeOfEstablishment (name)": "type",
+    "EstablishmentTypeGroup (name)": "type_group",
     "EstablishmentStatus (name)": "status",
     "Easting": "easting",
     "Northing": "northing",
@@ -33,10 +49,22 @@ def load() -> pd.DataFrame:
     df = pd.read_csv(raw, encoding=config.GIAS_ENCODING, dtype=str,
                      usecols=list(_COLS)).rename(columns=_COLS)
 
-    # scope: open, England, secondary phase, real coordinates
+    # scope: open, England only
     df = df[df["status"].str.strip() == "Open"]
-    df = df[~df["region"].str.strip().isin(config.EXCLUDE_GOR)]
-    df = df[df["phase"].str.strip().isin(config.SECONDARY_PHASES)]
+    df = df[~df["region"].str.strip().isin(config.EXCLUDE_GOR)].copy()
+
+    age_low = pd.to_numeric(df["age_low"], errors="coerce")
+    age_high = pd.to_numeric(df["age_high"], errors="coerce")
+    is_independent = df["type_group"].str.strip() == config.INDEPENDENT_TYPE_GROUP
+
+    # keep: state secondary phases, OR independent schools covering secondary age
+    state_secondary = df["phase"].str.strip().isin(config.SECONDARY_PHASES)
+    indep_secondary = (
+        is_independent
+        & (age_low <= config.INDEPENDENT_AGE_LOW_MAX)
+        & (age_high >= config.INDEPENDENT_AGE_HIGH_MIN)
+    )
+    df = df[state_secondary | indep_secondary].copy()
 
     df["easting"] = pd.to_numeric(df["easting"], errors="coerce")
     df["northing"] = pd.to_numeric(df["northing"], errors="coerce")
@@ -47,13 +75,27 @@ def load() -> pd.DataFrame:
     df["lat"] = lat.round(6)
 
     df["urn"] = df["urn"].str.strip()
+    df["funding"] = df["type_group"].str.strip().eq(config.INDEPENDENT_TYPE_GROUP).map(
+        {True: "Independent", False: "State-funded"})
     df["selective"] = df["admissions_policy"].str.strip().eq("Selective")
     df["has_faith"] = ~df["religious_character"].str.strip().isin(
         ["None", "Does not apply", "", "nan"])
 
-    keep = ["urn", "name", "phase", "type", "region", "local_authority",
+    # age coverage / stage — flags sixth-form-only (16+) schools in particular
+    al = pd.to_numeric(df["age_low"], errors="coerce")
+    ah = pd.to_numeric(df["age_high"], errors="coerce")
+    df["age_low"] = al.astype("Int64")
+    df["age_high"] = ah.astype("Int64")
+    df["sixth_form_only"] = al >= 16
+    df["has_sixth_form"] = ah >= 17
+    df["stage"] = [_stage(lo, hi) for lo, hi in zip(al, ah)]
+
+    keep = ["urn", "name", "phase", "type", "funding", "region", "local_authority",
             "postcode", "religious_character", "has_faith", "admissions_policy",
-            "selective", "age_low", "age_high", "lat", "lon"]
+            "selective", "age_low", "age_high", "stage", "sixth_form_only",
+            "has_sixth_form", "lat", "lon"]
     df = df[keep].reset_index(drop=True)
-    print(f"  GIAS: {len(df)} open England secondary schools with coordinates")
+    n_ind = int((df["funding"] == "Independent").sum())
+    print(f"  GIAS: {len(df)} open England secondary schools with coordinates "
+          f"({n_ind} independent, {len(df) - n_ind} state-funded)")
     return df
