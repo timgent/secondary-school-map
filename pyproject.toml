@@ -1,0 +1,15 @@
+[project]
+name = "school-analysis"
+version = "0.1.0"
+description = "Interactive map of England secondary schools with performance filtering"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.0",
+    "pyproj>=3.6",
+    "requests>=2.31",
+    "openpyxl>=3.1",
+    "pyarrow>=24.0.0",
+]
+
+[tool.uv]
+package = false

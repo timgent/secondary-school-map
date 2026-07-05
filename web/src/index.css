@@ -1,0 +1,91 @@
+:root {
+  --panel-w: 340px;
+  --border: #e2e5ea;
+  --ink: #1c2430;
+  --muted: #6b7480;
+  --accent: #1a5fb4;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+
+.app { display: flex; height: 100%; }
+.mapwrap { position: relative; flex: 1; }
+.map { position: absolute; inset: 0; }
+
+.loading {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%; color: var(--muted); text-align: center; line-height: 1.6;
+}
+
+/* ---- panel ---- */
+.panel {
+  width: var(--panel-w); flex: 0 0 var(--panel-w); height: 100%;
+  overflow-y: auto; padding: 16px 18px; border-right: 1px solid var(--border);
+  background: #fbfcfd;
+}
+.panel h1 { font-size: 18px; margin: 0 0 2px; }
+.panel .count { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+.panel h2 {
+  font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--muted); margin: 18px 0 8px; border-top: 1px solid var(--border); padding-top: 14px;
+}
+.panel section:first-of-type h2 { border-top: none; }
+
+select, input[type="range"] { font: inherit; }
+.panel > section > select {
+  width: 100%; padding: 7px 8px; border: 1px solid var(--border); border-radius: 6px; background: #fff;
+}
+
+.check { display: flex; align-items: center; gap: 7px; font-size: 13px; padding: 3px 0; cursor: pointer; }
+.check.muted { color: var(--muted); font-size: 12px; }
+.row { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-top: 8px; }
+.row select { flex: 1; padding: 5px; border: 1px solid var(--border); border-radius: 6px; }
+
+.swatch { width: 13px; height: 13px; border-radius: 3px; border: 1px solid #0002; flex: 0 0 auto; }
+
+/* numeric filters */
+.numfilter { padding: 6px 0; border-bottom: 1px dashed var(--border); }
+.numfilter.on { background: #f2f7ff; margin: 0 -8px; padding: 6px 8px; border-radius: 6px; }
+.numctl { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; margin-top: 6px; }
+.numctl select { padding: 4px; border: 1px solid var(--border); border-radius: 6px; }
+.numctl input[type="range"] { min-width: 60px; }
+
+.numbox { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; color: var(--muted); }
+.numbox .pre { white-space: nowrap; }
+.numbox input {
+  width: 52px; padding: 3px 4px; font: inherit; font-size: 12px; text-align: right;
+  border: 1px solid var(--border); border-radius: 5px; background: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.numbox input:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+
+/* legend */
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 10px; }
+.legitem { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+
+.foot { font-size: 11px; color: var(--muted); margin-top: 18px; line-height: 1.5; }
+
+/* ---- detail card ---- */
+.detail {
+  position: absolute; top: 12px; right: 12px; width: 320px; max-height: calc(100% - 24px);
+  overflow-y: auto; background: #fff; border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 8px 30px #0003; padding: 16px 18px;
+}
+.detail .close {
+  position: absolute; top: 8px; right: 10px; border: none; background: none;
+  font-size: 22px; line-height: 1; cursor: pointer; color: var(--muted);
+}
+.detail h3 { margin: 0 6px 2px 0; font-size: 16px; padding-right: 16px; }
+.detail .sub { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
+.detail table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.detail th { text-align: left; font-weight: 500; color: var(--muted); padding: 5px 0; vertical-align: top; width: 46%; }
+.detail td { text-align: right; padding: 5px 0; font-variant-numeric: tabular-nums; }
+.detail .pct { color: var(--muted); font-size: 11px; }
+.detail .tag {
+  display: inline-block; background: #eef3fb; color: var(--accent);
+  font-size: 10px; padding: 1px 6px; border-radius: 4px;
+}
+.maplibregl-popup { max-width: 260px; }

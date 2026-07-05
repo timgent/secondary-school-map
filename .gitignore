@@ -1,0 +1,11 @@
+# Data (downloaded / generated)
+data/raw/
+data/*.parquet
+data/*.geojson
+.venv/
+__pycache__/
+*.pyc
+web/node_modules/
+web/dist/
+web/public/schools.geojson
+.DS_Store
