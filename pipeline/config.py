@@ -73,6 +73,13 @@ KS4_LATEST_COLUMNS = {
     "PTL2BASICS_95": "pct_grade5_eng_maths",  # % achieving grade 5+ in Eng & Maths
     "EBACCAPS": "ebacc_aps",                  # EBacc average point score
 }
+# Progress 8 broken down by pupils' prior-attainment band (their end-of-primary
+# KS2 level). Latest year only, for display on the school detail card.
+KS4_SUBGROUP_COLUMNS = {
+    "P8MEA_LO": "progress8_low",      # P8 for lower prior-attainment pupils
+    "P8MEA_MID": "progress8_mid",     # P8 for middle prior-attainment pupils
+    "P8MEA_HI": "progress8_high",     # P8 for higher prior-attainment pupils
+}
 # Values in KS4 files meaning "no data" -> NaN.
 KS4_NA_VALUES = {"NA", "SUPP", "NE", "NEW", "LOWCOV", "NP", "", "-"}
 
@@ -91,6 +98,8 @@ OUT_PARQUET = DATA / "schools.parquet"
 OUT_GEOJSON = DATA / "schools.geojson"
 
 # Base metrics for national-percentile computation. Multi-year ones expand to
-# one column per year tag (e.g. progress8_2024); latest-only stay as-is.
+# one column per year tag (e.g. progress8_2024) plus a 3-year average
+# (progress8_avg); latest-only stay as-is.
 MULTIYEAR_METRICS = ["progress8", "attainment8"]
 LATEST_METRICS = ["pct_grade5_eng_maths", "ebacc_aps"]
+AVG_TAG = "avg"  # synthetic "year" tag for the multi-year average

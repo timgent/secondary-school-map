@@ -102,6 +102,23 @@ select, input[type="range"] { font: inherit; }
 .detail table.years thead th.sel { color: var(--accent); }
 .detail .ci { font-size: 11px; color: var(--muted); margin: 0 0 12px; }
 
+/* Progress 8 by prior-attainment band */
+.detail .bands { margin: 4px 0 12px; }
+.detail .bands h4 { margin: 0 0 2px; font-size: 13px; }
+.detail .bands h4 .muted { color: var(--muted); font-weight: 400; font-size: 11px; }
+.detail .bandhint { margin: 0 0 8px; font-size: 11px; color: var(--muted); line-height: 1.4; }
+.detail table.bandtable { width: 100%; }
+.detail table.bandtable th { width: 34%; font-size: 12px; color: var(--ink); font-weight: 400; }
+.detail td.bar { width: 46%; padding: 5px 8px; }
+.detail td.bar .track {
+  position: relative; display: block; height: 8px; background: #eef0f3; border-radius: 4px;
+}
+.detail td.bar .fill { position: absolute; top: 0; height: 8px; border-radius: 4px; }
+.detail td.bar .fill.up { background: #1a9850; }
+.detail td.bar .fill.down { background: #d73027; }
+.detail td.bar .mid { position: absolute; left: 50%; top: -1px; width: 1px; height: 10px; background: #98a0aa; }
+.detail td.bandval { width: 20%; font-variant-numeric: tabular-nums; font-size: 12px; }
+
 .detail .tag {
   display: inline-block; background: #eef3fb; color: var(--accent);
   font-size: 10px; padding: 1px 6px; border-radius: 4px; font-weight: 600;

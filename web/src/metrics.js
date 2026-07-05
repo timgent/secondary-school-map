@@ -3,11 +3,13 @@
 
 const GREY = "#d9d9d9"; // schools with no value for the active metric
 
-// KS4 years available for Progress 8 & Attainment 8 (tag = summer GCSEs sat).
+// KS4 years available for Progress 8 & Attainment 8 (tag = summer GCSEs sat),
+// plus a synthetic 3-year average.
 export const YEARS = [
   { tag: "2024", label: "2023–24" },
   { tag: "2023", label: "2022–23" },
   { tag: "2022", label: "2021–22" },
+  { tag: "avg", label: "3-year average", avg: true },
 ];
 export const LATEST_YEAR = YEARS[0].tag;
 export const yearLabel = (tag) => YEARS.find((y) => y.tag === tag)?.label ?? tag;

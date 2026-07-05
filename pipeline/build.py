@@ -11,11 +11,20 @@ import pandas as pd
 from . import config, gias, ks4, ofsted
 
 
+def _add_year_averages(df: pd.DataFrame) -> pd.DataFrame:
+    """3-year average of each multi-year metric (mean of available years)."""
+    for base in config.MULTIYEAR_METRICS:
+        cols = [f"{base}_{t}" for t in config.KS4_YEAR_TAG.values() if f"{base}_{t}" in df.columns]
+        if cols:
+            df[f"{base}_{config.AVG_TAG}"] = df[cols].mean(axis=1).round(2)
+    return df
+
+
 def _metric_columns() -> list[str]:
     """All numeric metric columns we want national percentiles for."""
     cols = list(config.LATEST_METRICS)
     for base in config.MULTIYEAR_METRICS:
-        for tag in config.KS4_YEAR_TAG.values():
+        for tag in [*config.KS4_YEAR_TAG.values(), config.AVG_TAG]:
             cols.append(f"{base}_{tag}")
     return cols
 
@@ -40,7 +49,8 @@ def build() -> pd.DataFrame:
     if ks4_df is not None:
         df = df.merge(ks4_df, on="urn", how="left")
 
-    print("[4/4] Percentiles + outputs")
+    print("[4/4] Averages, percentiles + outputs")
+    df = _add_year_averages(df)
     df = _add_percentiles(df)
 
     df.to_parquet(config.OUT_PARQUET, index=False)

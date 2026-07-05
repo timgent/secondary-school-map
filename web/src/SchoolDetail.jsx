@@ -31,7 +31,9 @@ export default function SchoolDetail({ school: p, year, onClose }) {
           <tr>
             <th></th>
             {YEARS.map((y) => (
-              <th key={y.tag} className={y.tag === year ? "sel" : ""}>{y.label}</th>
+              <th key={y.tag} className={y.tag === year ? "sel" : ""}>
+                {y.avg ? "3-yr avg" : y.label}
+              </th>
             ))}
           </tr>
         </thead>
@@ -54,11 +56,32 @@ export default function SchoolDetail({ school: p, year, onClose }) {
         </tbody>
       </table>
 
-      {p[`progress8_${year}`] != null && (
+      {year !== "avg" && p[`progress8_ci_low_${year}`] != null && (
         <p className="ci">
           {YEARS.find((y) => y.tag === year)?.label} Progress 8 95% interval:{" "}
           {fmt(p[`progress8_ci_low_${year}`])} to {fmt(p[`progress8_ci_high_${year}`])}
         </p>
+      )}
+
+      {/* Progress 8 by prior-attainment band (latest year) */}
+      {(p.progress8_low != null || p.progress8_mid != null || p.progress8_high != null) && (
+        <div className="bands">
+          <h4>
+            Progress 8 by prior attainment{" "}
+            <span className="muted">({YEARS[0].label})</span>
+          </h4>
+          <p className="bandhint">
+            How much progress pupils make depending on where they started at the
+            end of primary school.
+          </p>
+          <table className="bandtable">
+            <tbody>
+              <BandRow label="Lower starters" v={p.progress8_low} />
+              <BandRow label="Middle starters" v={p.progress8_mid} />
+              <BandRow label="Higher starters" v={p.progress8_high} />
+            </tbody>
+          </table>
+        </div>
       )}
 
       {/* Single-year GCSE metrics + Ofsted */}
@@ -86,6 +109,29 @@ function MetricRow({ p, m }) {
         {v == null ? "—" : m.format(v)}
         {pct != null && <span className="pct"> ({ordinal(pct)} pctile)</span>}
       </td>
+    </tr>
+  );
+}
+
+// One prior-attainment band row, with a small signed bar for quick reading.
+function BandRow({ label, v }) {
+  const val = v == null ? null : v;
+  // scale a P8 value (~[-1,1]) to a 0–100% half-bar either side of centre.
+  const pct = val == null ? 0 : Math.min(50, (Math.abs(val) / 1) * 50);
+  const pos = val != null && val >= 0;
+  return (
+    <tr>
+      <th>{label}</th>
+      <td className="bar">
+        <span className="track">
+          <span
+            className={`fill ${pos ? "up" : "down"}`}
+            style={{ width: `${pct}%`, [pos ? "left" : "right"]: "50%" }}
+          />
+          <span className="mid" />
+        </span>
+      </td>
+      <td className="bandval">{val == null ? "—" : val.toFixed(2)}</td>
     </tr>
   );
 }
