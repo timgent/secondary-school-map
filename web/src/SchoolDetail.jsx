@@ -119,6 +119,39 @@ export default function SchoolDetail({ school: p, year, onClose }) {
           </tr>
         </tbody>
       </table>
+
+      <Links p={p} />
+    </div>
+  );
+}
+
+// Useful external links for a school. All but the school's own website are
+// built from the URN, which every school has; the DfE/Ofsted/GIAS pages are
+// canonical so no per-school data is needed beyond the identifier.
+function Links({ p }) {
+  const urn = p.urn;
+  const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    `${p.name} ${p.postcode ?? ""}`.trim()
+  )}`;
+  const links = [
+    p.website && ["School website", p.website],
+    ["Compare school performance", `https://www.compare-school-performance.service.gov.uk/school/${urn}`],
+    ["Ofsted reports", `https://reports.ofsted.gov.uk/search?q=${urn}`],
+    ["GIAS record", `https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/${urn}`],
+    ["Google Maps", maps],
+  ].filter(Boolean);
+  return (
+    <div className="links">
+      <h4>Links</h4>
+      <ul>
+        {links.map(([label, href]) => (
+          <li key={label}>
+            <a href={href} target="_blank" rel="noopener noreferrer">
+              {label} <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

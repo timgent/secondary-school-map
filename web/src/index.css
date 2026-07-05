@@ -109,6 +109,14 @@ select, input[type="range"] { font: inherit; }
 .detail .bandhint { margin: 0 0 8px; font-size: 11px; color: var(--muted); line-height: 1.4; }
 .detail table.bandyears th:first-child { font-weight: 400; color: var(--ink); }
 
+/* external links */
+.detail .links { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 10px; }
+.detail .links h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.detail .links ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.detail .links a { color: var(--accent); text-decoration: none; font-size: 13px; }
+.detail .links a:hover { text-decoration: underline; }
+.detail .links span { font-size: 10px; }
+
 .detail .tag {
   display: inline-block; background: #eef3fb; color: var(--accent);
   font-size: 10px; padding: 1px 6px; border-radius: 4px; font-weight: 600;

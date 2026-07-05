@@ -40,7 +40,20 @@ _COLS = {
     "AdmissionsPolicy (name)": "admissions_policy",
     "StatutoryLowAge": "age_low",
     "StatutoryHighAge": "age_high",
+    "SchoolWebsite": "website",
 }
+
+
+def _norm_url(u) -> str | None:
+    """Tidy a GIAS website value into a clickable URL (or None)."""
+    if not isinstance(u, str):
+        return None
+    u = u.strip()
+    if not u or u.lower() in {"nan", "none"}:
+        return None
+    if not u.startswith(("http://", "https://")):
+        u = "https://" + u
+    return u
 
 
 def load() -> pd.DataFrame:
@@ -90,10 +103,12 @@ def load() -> pd.DataFrame:
     df["has_sixth_form"] = ah >= 17
     df["stage"] = [_stage(lo, hi) for lo, hi in zip(al, ah)]
 
+    df["website"] = df["website"].map(_norm_url)
+
     keep = ["urn", "name", "phase", "type", "funding", "region", "local_authority",
             "postcode", "religious_character", "has_faith", "admissions_policy",
             "selective", "age_low", "age_high", "stage", "sixth_form_only",
-            "has_sixth_form", "lat", "lon"]
+            "has_sixth_form", "website", "lat", "lon"]
     df = df[keep].reset_index(drop=True)
     n_ind = int((df["funding"] == "Independent").sum())
     print(f"  GIAS: {len(df)} open England secondary schools with coordinates "
