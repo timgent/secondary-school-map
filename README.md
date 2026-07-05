@@ -7,33 +7,44 @@ local jobs). See the plan and progress below.
 ## Status
 
 **Milestone 1 — data pipeline: working.** Produces `data/schools.geojson`
-(3,703 open England secondary schools) and `data/schools.parquet`, joining:
+(4,643 England secondary schools — state-funded + independent) and
+`data/schools.parquet`, joining:
 
 | Source | Gives us | Status |
 |--------|----------|--------|
-| **GIAS** (Get Information About Schools) | registry, location, type, phase, selective/faith flags, LA/region | ✅ live |
+| **GIAS** (Get Information About Schools) | registry, location, type, phase, funding, selective/faith flags, age range, LA/region | ✅ live |
 | **Ofsted MI** (state-funded schools) | legacy 4-point overall grade + 2025 report-card grades | ✅ live |
-| **DfE KS4** (GCSE) | Progress 8, Attainment 8, %5+ Eng&Maths, EBacc APS | ✅ live (2023-24) |
+| **DfE KS4** (GCSE) | Progress 8 & Attainment 8 for **3 years** (2021-22…2023-24) + 3-yr average; P8 by prior-attainment band; %5+ Eng&Maths, EBacc APS | ✅ live |
 
-3,282 of 3,703 schools have a Progress 8 score; national percentiles are
-computed for "top X%" filtering.
+National percentiles are computed for every numeric metric (and the 3-year
+average) for "top X%" filtering. ~3,150 schools have a current Progress 8 score
+(independent schools and sixth-form-only sites don't report KS4 P8).
 
 **Milestone 2 — map frontend: working.** A Vite + React + MapLibre app in
 `web/` renders all schools on a free CARTO basemap, coloured by a chosen metric,
 with a filter panel:
 
 - **Colour by** Progress 8 (diverging around 0), Attainment 8, %5+ Eng&Maths,
-  EBacc APS, or Ofsted grade — with a live legend.
+  EBacc APS, Ofsted grade, or funding — with a live legend.
+- **Year selector** for Progress 8 / Attainment 8: any of the 3 years or the
+  **3-year average**, applied to colouring and filters.
 - **Performance filters** per metric, each toggleable between "value ≥" and
-  "top X%" (national percentile) — e.g. *top 10% by Progress 8*.
-- **Ofsted** (legacy grades, multi-select), **grammar-only**, and **faith**
+  "top X%" (national percentile), with a synced slider **and number box**.
+- **Ofsted** (legacy grades), **funding** (state / independent), **age range /
+  stage** (incl. flagging *16–19 sixth-form-only*), **selective**, and **faith**
   filters.
-- **Click a school** for a detail card (all metrics + percentiles, P8
-  confidence interval, Ofsted — legacy or 2025 report-card). This card is where
-  Milestone 3–4 enrichment (commute, house price, jobs) will live.
+- **Click a school** for a detail card: multi-year P8/A8 with per-year
+  percentiles + 3-yr average, P8 confidence interval, **Progress 8 by prior-
+  attainment band** (lower/middle/higher starters), funding, age/stage, and
+  Ofsted (legacy or 2025 report-card).
+- **Shareable links**: the colour dimension, year and all filters live in the
+  URL (`?color=…&year=…&f_progress8=top:10`), restored on load.
 
 Milestones 3 (commute / house-price / catchment) and 4 (jobs enrichment) are
-not started.
+not started. A fuller "interpretation-first" KS4 UX (disadvantaged-pupil gap,
+official P8 banding chip, plain-English P8-vs-A8 guidance, band-aware colour-by)
+is specced in `docs/add-subgroup-metrics-prompt.md` and only partly built so far
+(3-year average + band breakdown done; the guided-interpretation redesign is not).
 
 ### Running the map
 
