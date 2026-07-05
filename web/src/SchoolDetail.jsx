@@ -1,5 +1,12 @@
 import { YEARS, METRIC_BY_KEY } from "./metrics.js";
 
+// Progress 8 prior-attainment bands (pupils grouped by end-of-primary KS2 level).
+const BANDS = [
+  { key: "progress8_low", label: "Lower starters" },
+  { key: "progress8_mid", label: "Middle starters" },
+  { key: "progress8_high", label: "Higher starters" },
+];
+
 // Detail card for a clicked school. Also the natural home (later) for the
 // commute / house-price / jobs enrichment (Milestones 3–4).
 export default function SchoolDetail({ school: p, year, onClose }) {
@@ -63,22 +70,39 @@ export default function SchoolDetail({ school: p, year, onClose }) {
         </p>
       )}
 
-      {/* Progress 8 by prior-attainment band (latest year) */}
-      {(p.progress8_low != null || p.progress8_mid != null || p.progress8_high != null) && (
+      {/* Progress 8 by prior-attainment band, year by year + 3-yr average */}
+      {BANDS.some((b) => YEARS.some((y) => p[`${b.key}_${y.tag}`] != null)) && (
         <div className="bands">
-          <h4>
-            Progress 8 by prior attainment{" "}
-            <span className="muted">({YEARS[0].label})</span>
-          </h4>
+          <h4>Progress 8 by prior attainment</h4>
           <p className="bandhint">
             How much progress pupils make depending on where they started at the
             end of primary school.
           </p>
-          <table className="bandtable">
+          <table className="years bandyears">
+            <thead>
+              <tr>
+                <th></th>
+                {YEARS.map((y) => (
+                  <th key={y.tag} className={y.tag === year ? "sel" : ""}>
+                    {y.avg ? "3-yr avg" : y.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
             <tbody>
-              <BandRow label="Lower starters" v={p.progress8_low} />
-              <BandRow label="Middle starters" v={p.progress8_mid} />
-              <BandRow label="Higher starters" v={p.progress8_high} />
+              {BANDS.map((b) => (
+                <tr key={b.key}>
+                  <th>{b.label}</th>
+                  {YEARS.map((y) => {
+                    const v = p[`${b.key}_${y.tag}`];
+                    return (
+                      <td key={y.tag} className={y.tag === year ? "sel" : ""}>
+                        {v == null ? "—" : v.toFixed(2)}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -109,29 +133,6 @@ function MetricRow({ p, m }) {
         {v == null ? "—" : m.format(v)}
         {pct != null && <span className="pct"> ({ordinal(pct)} pctile)</span>}
       </td>
-    </tr>
-  );
-}
-
-// One prior-attainment band row, with a small signed bar for quick reading.
-function BandRow({ label, v }) {
-  const val = v == null ? null : v;
-  // scale a P8 value (~[-1,1]) to a 0–100% half-bar either side of centre.
-  const pct = val == null ? 0 : Math.min(50, (Math.abs(val) / 1) * 50);
-  const pos = val != null && val >= 0;
-  return (
-    <tr>
-      <th>{label}</th>
-      <td className="bar">
-        <span className="track">
-          <span
-            className={`fill ${pos ? "up" : "down"}`}
-            style={{ width: `${pct}%`, [pos ? "left" : "right"]: "50%" }}
-          />
-          <span className="mid" />
-        </span>
-      </td>
-      <td className="bandval">{val == null ? "—" : val.toFixed(2)}</td>
     </tr>
   );
 }

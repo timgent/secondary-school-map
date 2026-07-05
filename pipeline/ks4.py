@@ -47,14 +47,15 @@ def load() -> pd.DataFrame | None:
         tag = config.KS4_YEAR_TAG[year]
         raw = _read_year(year)
 
-        # Progress 8 / Attainment 8 for this year (suffixed).
+        # Progress 8 / Attainment 8 + P8-by-prior-attainment-band for this year
+        # (all year-suffixed, e.g. progress8_2024, progress8_low_2024).
         part = _extract(raw, config.KS4_MULTIYEAR_COLUMNS, suffix=f"_{tag}")
-        # For the latest year, also pull single-year metrics + P8 band breakdown.
+        bands = _extract(raw, config.KS4_SUBGROUP_COLUMNS, suffix=f"_{tag}")
+        part = part.merge(bands, on="urn", how="outer")
+        # For the latest year, also pull single-year metrics (unsuffixed).
         if i == 0:
             latest = _extract(raw, config.KS4_LATEST_COLUMNS)
-            bands = _extract(raw, config.KS4_SUBGROUP_COLUMNS)
             part = part.merge(latest, on="urn", how="outer")
-            part = part.merge(bands, on="urn", how="outer")
 
         part = part[part["urn"].str.isdigit()].drop_duplicates("urn")
         n_p8 = part[f"progress8_{tag}"].notna().sum()

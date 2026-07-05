@@ -74,7 +74,9 @@ KS4_LATEST_COLUMNS = {
     "EBACCAPS": "ebacc_aps",                  # EBacc average point score
 }
 # Progress 8 broken down by pupils' prior-attainment band (their end-of-primary
-# KS2 level). Latest year only, for display on the school detail card.
+# KS2 level). Pulled for EVERY year in KS4_YEARS (year-suffixed, e.g.
+# progress8_low_2024) plus a 3-year average, for display on the school detail
+# card. Display only — no national percentiles are computed for these.
 KS4_SUBGROUP_COLUMNS = {
     "P8MEA_LO": "progress8_low",      # P8 for lower prior-attainment pupils
     "P8MEA_MID": "progress8_mid",     # P8 for middle prior-attainment pupils
@@ -102,4 +104,7 @@ OUT_GEOJSON = DATA / "schools.geojson"
 # (progress8_avg); latest-only stay as-is.
 MULTIYEAR_METRICS = ["progress8", "attainment8"]
 LATEST_METRICS = ["pct_grade5_eng_maths", "ebacc_aps"]
+# Prior-attainment band P8 series: multi-year (like MULTIYEAR_METRICS) but
+# display-only, so they get year suffixes + a 3-year average but NO percentiles.
+SUBGROUP_METRICS = ["progress8_low", "progress8_mid", "progress8_high"]
 AVG_TAG = "avg"  # synthetic "year" tag for the multi-year average

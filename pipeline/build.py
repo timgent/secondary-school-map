@@ -12,8 +12,11 @@ from . import config, gias, ks4, ofsted
 
 
 def _add_year_averages(df: pd.DataFrame) -> pd.DataFrame:
-    """3-year average of each multi-year metric (mean of available years)."""
-    for base in config.MULTIYEAR_METRICS:
+    """3-year average of each multi-year metric (mean of available years).
+
+    Covers the headline metrics and the prior-attainment band series.
+    """
+    for base in [*config.MULTIYEAR_METRICS, *config.SUBGROUP_METRICS]:
         cols = [f"{base}_{t}" for t in config.KS4_YEAR_TAG.values() if f"{base}_{t}" in df.columns]
         if cols:
             df[f"{base}_{config.AVG_TAG}"] = df[cols].mean(axis=1).round(2)
