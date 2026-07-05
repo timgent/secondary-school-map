@@ -23,7 +23,7 @@ const BASEMAP_STYLE = {
 
 const EMPTY = { type: "FeatureCollection", features: [] };
 
-export default function SchoolMap({ data, colorBy, year, initialView, onMove, onSelect }) {
+export default function SchoolMap({ data, colorBy, year, initialView, focus, onMove, onSelect }) {
   const container = useRef(null);
   const map = useRef(null);
   const ready = useRef(false);
@@ -90,6 +90,12 @@ export default function SchoolMap({ data, colorBy, year, initialView, onMove, on
     if (ready.current)
       map.current.setPaintProperty("schools", "circle-color", colorExpression(colorBy, year));
   }, [colorBy, year]);
+
+  // fly to a school chosen from search (n bumps so re-picking the same one works)
+  useEffect(() => {
+    if (focus && map.current)
+      map.current.flyTo({ center: [focus.lng, focus.lat], zoom: focus.zoom, speed: 1.4 });
+  }, [focus?.n]); // eslint-disable-line
 
   return <div ref={container} className="map" />;
 }

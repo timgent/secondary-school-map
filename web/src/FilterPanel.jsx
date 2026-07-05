@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { METRICS, OFSTED_LEGACY, YEARS, legendFor, yearLabel } from "./metrics.js";
 import { STAGES } from "./filters.js";
+import SearchBox from "./SearchBox.jsx";
 
 export default function FilterPanel({
   filters, setFilters, colorBy, setColorBy, year, setYear, count, total,
+  features, onPick,
 }) {
   const update = (fn) => setFilters((prev) => { const next = structuredClone(prev); fn(next); return next; });
 
@@ -13,6 +15,8 @@ export default function FilterPanel({
       <p className="count">
         <b>{count.toLocaleString()}</b> of {total.toLocaleString()} schools shown
       </p>
+
+      <SearchBox features={features} onPick={onPick} />
 
       <section>
         <h2>Colour by</h2>

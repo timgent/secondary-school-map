@@ -13,8 +13,16 @@ export default function App() {
   const [colorBy, setColorBy] = useState(initial.colorBy);
   const [year, setYear] = useState(initial.year);
   const [view, setView] = useState(initial.view);
+  const [focus, setFocus] = useState(null);
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState(null);
+
+  // pick a school from search: open its card and fly the map to it
+  const pickSchool = (feature) => {
+    const [lng, lat] = feature.geometry.coordinates;
+    setSelected(feature.properties);
+    setFocus({ lng, lat, zoom: 13, n: (focus?.n ?? 0) + 1 });
+  };
 
   useEffect(() => {
     fetch("/schools.geojson")
@@ -54,6 +62,8 @@ export default function App() {
         setYear={setYear}
         count={filtered.features.length}
         total={features.length}
+        features={features}
+        onPick={pickSchool}
       />
       <div className="mapwrap">
         <SchoolMap
@@ -61,6 +71,7 @@ export default function App() {
           colorBy={colorBy}
           year={year}
           initialView={initial.view}
+          focus={focus}
           onMove={setView}
           onSelect={setSelected}
         />
