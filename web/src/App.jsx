@@ -191,7 +191,7 @@ export default function App() {
             data={filteredFC}
             colorBy={colorBy}
             year={year}
-            initialView={initial.view}
+            initialView={view}
             focus={focus}
             place={place}
             onMove={setView}
