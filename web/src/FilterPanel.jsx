@@ -4,6 +4,7 @@ import { STAGES } from "./filters.js";
 import SearchBox from "./SearchBox.jsx";
 
 export default function FilterPanel({
+  onClosePanel,
   mode, setMode, comparing, setComparing, compareFeatures, onToggleCompare, onClearCompare,
   filters, setFilters, colorBy, setColorBy, year, setYear, count, total,
   features, onPick, onGoToPlace,
@@ -12,6 +13,7 @@ export default function FilterPanel({
 
   return (
     <aside className="panel">
+      <button className="panelclose" onClick={onClosePanel} aria-label="Close filters">×</button>
       <h1>England Secondary Schools</h1>
       <p className="count">
         <b>{count.toLocaleString()}</b> of {total.toLocaleString()} schools shown

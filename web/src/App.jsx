@@ -12,9 +12,15 @@ import { detectPostcode, geocode } from "./geocode.js";
 const initial = decodeState(window.location.search);
 export const MAX_COMPARE = 5;
 
+const isMobile = () =>
+  typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches;
+
 export default function App() {
   const [features, setFeatures] = useState(null);
   const [mode, setMode] = useState(initial.mode);
+  // on phones the panel is a collapsible overlay; start closed there so the
+  // map/list gets the screen. On desktop it's always shown (CSS ignores this).
+  const [panelOpen, setPanelOpen] = useState(() => !isMobile());
   const [comparing, setComparing] = useState(initial.comparing);
   const [compareUrns, setCompareUrns] = useState(initial.compareUrns);
   const [filters, setFilters] = useState(initial.filters);
@@ -28,21 +34,29 @@ export default function App() {
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState(null);
 
+  // on phones, collapse the panel after an action so the result is visible
+  const closeOnMobile = () => { if (isMobile()) setPanelOpen(false); };
+
   // pick a school from search: open its card and fly the map to it
   const pickSchool = (feature) => {
     const [lng, lat] = feature.geometry.coordinates;
     setSelected(feature.properties);
     setFocus((prev) => ({ lng, lat, zoom: 13, n: (prev?.n ?? 0) + 1 }));
+    closeOnMobile();
   };
 
   // go to an arbitrary geocoded postcode: drop a marker and fly there
   const goToPlace = ({ lng, lat, zoom, label }) => {
     setPlace({ lng, lat, label });
     setFocus((prev) => ({ lng, lat, zoom, n: (prev?.n ?? 0) + 1 }));
+    closeOnMobile();
   };
 
   // switching the Map/List toggle also leaves the compare overlay
-  const switchMode = (m) => { setMode(m); setComparing(false); };
+  const switchMode = (m) => { setMode(m); setComparing(false); closeOnMobile(); };
+
+  // opening the compare view collapses the panel on phones
+  const setComparingMobile = (v) => { setComparing(v); if (v) closeOnMobile(); };
 
   // add/remove a school from the compare set (URN-keyed, capped at MAX_COMPARE).
   // Carried across map & list views since it lives here in App state.
@@ -114,12 +128,20 @@ export default function App() {
   const filteredFC = { type: "FeatureCollection", features: filtered };
 
   return (
-    <div className="app">
+    <div className={`app ${panelOpen ? "panel-open" : ""}`}>
+      <button
+        className="panel-toggle"
+        onClick={() => setPanelOpen((o) => !o)}
+        aria-label={panelOpen ? "Hide filters" : "Show filters"}
+      >
+        ☰ Filters
+      </button>
       <FilterPanel
+        onClosePanel={() => setPanelOpen(false)}
         mode={mode}
         setMode={switchMode}
         comparing={comparing}
-        setComparing={setComparing}
+        setComparing={setComparingMobile}
         compareFeatures={compareFeatures}
         onToggleCompare={toggleCompare}
         onClearCompare={() => setCompareUrns([])}
@@ -135,6 +157,9 @@ export default function App() {
         onPick={pickSchool}
         onGoToPlace={goToPlace}
       />
+      {panelOpen && (
+        <div className="panel-backdrop" onClick={() => setPanelOpen(false)} />
+      )}
       <div className="mapwrap">
         {comparing ? (
           <CompareView

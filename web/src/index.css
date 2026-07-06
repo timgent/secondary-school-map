@@ -12,8 +12,13 @@
 html, body, #root { height: 100%; margin: 0; }
 
 .app { display: flex; height: 100%; }
-.mapwrap { position: relative; flex: 1; }
+.mapwrap { position: relative; flex: 1; min-width: 0; }
 .map { position: absolute; inset: 0; }
+
+/* Collapsible-panel controls: hidden on desktop, shown at the mobile breakpoint. */
+.panel-toggle { display: none; }
+.panel-backdrop { display: none; }
+.panelclose { display: none; }
 
 .loading {
   display: flex; align-items: center; justify-content: center;
@@ -272,3 +277,40 @@ select, input[type="range"] { font: inherit; }
 .detail .tag.indep { background: #fdecec; color: #c0392b; }
 .detail .tag.state { background: #eaf1fb; color: #2c6fb0; }
 .maplibregl-popup { max-width: 260px; }
+
+/* ---- mobile: collapsible panel + roomier tap targets ---- */
+@media (max-width: 640px) {
+  /* floating button that opens the filter panel (over the map / list) */
+  .panel-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    position: fixed; top: 10px; left: 10px; z-index: 30;
+    padding: 9px 13px; font: inherit; font-size: 13px; font-weight: 600;
+    color: var(--ink); background: #fff; border: 1px solid var(--border);
+    border-radius: 8px; box-shadow: 0 2px 10px #0003; cursor: pointer;
+  }
+
+  /* the panel becomes a slide-in overlay instead of a fixed-width column */
+  .panel {
+    position: fixed; inset: 0 auto 0 0; z-index: 40;
+    width: 88%; max-width: 360px; flex: none;
+    transform: translateX(-100%); transition: transform .22s ease;
+    box-shadow: 0 0 40px #0005;
+  }
+  .app.panel-open .panel { transform: translateX(0); }
+  .panel-backdrop { display: block; position: fixed; inset: 0; z-index: 35; background: #0006; }
+
+  .panelclose {
+    display: inline-flex; align-items: center; justify-content: center;
+    position: absolute; top: 8px; right: 10px; width: 32px; height: 32px;
+    border: none; background: none; font-size: 26px; line-height: 1;
+    color: var(--muted); cursor: pointer;
+  }
+  .panel h1 { padding-right: 34px; }
+
+  /* main content fills the screen; leave room up top for the floating button */
+  .detail { top: 8px; left: 8px; right: 8px; width: auto; max-height: calc(100% - 16px); }
+  .listhead { padding: 54px 12px 10px; }
+  .centrerow { max-width: none; }
+  .comparehead { padding: 52px 12px 10px; }
+  .comparetable th.rowlabel, .comparetable thead th { min-width: 120px; }
+}
