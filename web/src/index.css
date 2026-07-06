@@ -156,6 +156,14 @@ select, input[type="range"] { font: inherit; }
 .comparetable .colyear { color: var(--accent); font-size: 11px; }
 .comparetable tbody td.best { font-weight: 700; color: #1a7f37; background: #eafbee; }
 .comparetable td { font-variant-numeric: tabular-nums; }
+.comparetable .cmppct { color: var(--muted); font-size: 11px; font-weight: 400; margin-top: 1px; }
+.comparetable tbody td.best .cmppct { color: #1a7f37; }
+.comparetable tr.cmpsection th.rowlabel {
+  background: #eef1f5; color: var(--ink); font-weight: 600; white-space: normal;
+  border-bottom: 1px solid var(--border); padding-top: 14px;
+}
+.comparetable tr.cmpsection .cmpsechint { color: var(--muted); font-weight: 400; font-size: 11px; }
+.comparetable th.rowlabel.indent { padding-left: 26px; font-weight: 400; }
 
 /* ---- list view ---- */
 .listwrap { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; }
