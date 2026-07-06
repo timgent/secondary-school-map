@@ -34,8 +34,11 @@ with a filter panel:
 - **Compare** (works from either mode; the selection carries across them). Pick
   up to **5 schools** — a checkbox in List, or "Add to compare" on a school's
   card — and open a **side-by-side** view lining up funding, type, stage, Ofsted
-  and every metric, highlighting the best value in each row. The selection is in
-  the URL too (`?compare=1&cmp=100123,100456`).
+  and every metric, highlighting the best value in each row. As in the detail
+  card, Progress 8 and Attainment 8 expand to the **full 3-year breakdown + 3-yr
+  average** (each with its national percentile), the selected year's **P8 95%
+  confidence interval**, and **Progress 8 by prior-attainment band**. The
+  selection is in the URL too (`?compare=1&cmp=100123,100456`).
 - **Search** by school name, postcode or area (local authority); picking a
   result flies to the school and opens its card. Typing a **UK postcode** also
   offers "centre map here" (geocoded via postcodes.io) with a marker — handy
