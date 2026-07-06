@@ -6,16 +6,29 @@ import { defaultFilters, STAGES } from "./filters.js";
 import { METRICS, LATEST_YEAR } from "./metrics.js";
 
 const DEFAULT_COLOR = "progress8";
+const DEFAULT_SORT = { key: "distance", dir: "asc" };
 // Initial map view (roughly centred on England), also the URL default so a
 // pristine link stays clean until the user pans/zooms.
 export const DEFAULT_VIEW = { lng: -1.5, lat: 52.6, zoom: 5.6 };
 
 const round = (n, dp) => Number(n.toFixed(dp));
 
-export function encodeState({ colorBy, year, filters, view }) {
+export function encodeState({
+  mode, comparing, compareUrns, colorBy, year, filters, view, listCentre, sort,
+}) {
   const q = new URLSearchParams();
+  if (mode === "list") q.set("mode", "list");
+  if (comparing) q.set("compare", "1");
+  if (compareUrns?.length) q.set("cmp", compareUrns.join(","));
   if (colorBy !== DEFAULT_COLOR) q.set("color", colorBy);
   if (year !== LATEST_YEAR) q.set("year", year);
+
+  // List view: the centre postcode and (non-default) sort make the view shareable.
+  if (mode === "list") {
+    if (listCentre?.compact) q.set("pc", listCentre.compact);
+    if (sort && (sort.key !== DEFAULT_SORT.key || sort.dir !== DEFAULT_SORT.dir))
+      q.set("sort", `${sort.key}:${sort.dir}`);
+  }
 
   if (view) {
     const lat = round(view.lat, 4), lng = round(view.lng, 4), z = round(view.zoom, 2);
@@ -49,8 +62,20 @@ export function decodeState(search) {
   const q = new URLSearchParams(search);
   const filters = defaultFilters();
 
+  const mode = q.get("mode") === "list" ? "list" : "map";
+  const comparing = q.get("compare") === "1";
+  const compareUrns = (q.get("cmp") || "").split(",").map((s) => s.trim()).filter(Boolean);
   const colorBy = q.get("color") || DEFAULT_COLOR;
   const year = q.get("year") || LATEST_YEAR;
+
+  // List view: centre postcode (geocoded on load) and sort column.
+  const centrePc = q.get("pc") || null;
+  let sort = { ...DEFAULT_SORT };
+  const rawSort = q.get("sort");
+  if (rawSort) {
+    const [key, dir] = rawSort.split(":");
+    if (key) sort = { key, dir: dir === "desc" ? "desc" : "asc" };
+  }
 
   const lat = parseFloat(q.get("lat"));
   const lng = parseFloat(q.get("lng"));
@@ -84,5 +109,5 @@ export function decodeState(search) {
     if (["min", "max", "top"].includes(mode) && val !== "" && !Number.isNaN(+val))
       filters.numeric[m.key] = { enabled: true, mode, value: +val };
   }
-  return { colorBy, year, filters, view };
+  return { mode, comparing, compareUrns, colorBy, year, filters, view, centrePc, sort };
 }

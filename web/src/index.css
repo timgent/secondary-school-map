@@ -12,8 +12,13 @@
 html, body, #root { height: 100%; margin: 0; }
 
 .app { display: flex; height: 100%; }
-.mapwrap { position: relative; flex: 1; }
+.mapwrap { position: relative; flex: 1; min-width: 0; }
 .map { position: absolute; inset: 0; }
+
+/* Collapsible-panel controls: hidden on desktop, shown at the mobile breakpoint. */
+.panel-toggle { display: none; }
+.panel-backdrop { display: none; }
+.panelclose { display: none; }
 
 .loading {
   display: flex; align-items: center; justify-content: center;
@@ -33,6 +38,17 @@ html, body, #root { height: 100%; margin: 0; }
   color: var(--muted); margin: 18px 0 8px; border-top: 1px solid var(--border); padding-top: 14px;
 }
 .panel section:first-of-type h2 { border-top: none; }
+
+/* ---- map / list mode toggle ---- */
+.modetoggle {
+  display: flex; gap: 4px; margin: 0 0 12px; padding: 3px;
+  background: #eef1f5; border-radius: 8px;
+}
+.modetoggle button {
+  flex: 1; padding: 6px 0; font: inherit; font-size: 13px; font-weight: 600;
+  border: none; border-radius: 6px; background: none; color: var(--muted); cursor: pointer;
+}
+.modetoggle button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px #0002; }
 
 /* ---- search ---- */
 .search { position: relative; margin: 0 0 6px; }
@@ -96,6 +112,111 @@ select, input[type="range"] { font: inherit; }
 
 .foot { font-size: 11px; color: var(--muted); margin-top: 18px; line-height: 1.5; }
 
+/* ---- compare tray (in panel) ---- */
+.cmptray { margin: 10px 0 4px; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+.cmptrayhead { display: flex; align-items: center; justify-content: space-between; }
+.cmptitle { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; }
+.cmptitle b { color: var(--accent); }
+.cmpclear { border: none; background: none; color: var(--accent); font: inherit; font-size: 12px; cursor: pointer; padding: 0; }
+.cmpchips { list-style: none; margin: 8px 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.cmpchips li { display: flex; align-items: center; gap: 6px; background: #eef3fb; border-radius: 6px; padding: 3px 6px; }
+.cmpname { flex: 1; font-size: 12px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmpchips li button { border: none; background: none; color: var(--muted); font-size: 16px; line-height: 1; cursor: pointer; padding: 0 2px; }
+.cmpchips li button:hover { color: #c0392b; }
+.cmpgo {
+  width: 100%; padding: 8px; margin-top: 2px; font: inherit; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer;
+}
+.cmpgo:disabled { opacity: .5; cursor: default; background: #fff; color: var(--muted); }
+.cmpback { width: 100%; margin-top: 6px; padding: 6px; font: inherit; font-size: 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; cursor: pointer; }
+
+/* ---- compare view ---- */
+.comparewrap { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; }
+.comparehead {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 18px; border-bottom: 1px solid var(--border); background: #fbfcfd;
+}
+.comparehead h2 { margin: 0; font-size: 16px; }
+.comparehead h2 .muted { color: var(--muted); font-weight: 400; font-size: 13px; }
+.cmpclosebtn { border: 1px solid var(--border); background: #fff; border-radius: 8px; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+.comparescroll { flex: 1; overflow: auto; padding: 4px 0 24px; }
+.comparetable { border-collapse: collapse; font-size: 13px; min-width: 100%; }
+.comparetable th, .comparetable td { padding: 9px 14px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+.comparetable thead th {
+  position: sticky; top: 0; z-index: 1; background: #f4f6f9; border-bottom: 2px solid var(--border);
+  min-width: 150px;
+}
+.comparetable .cmphname { font-weight: 600; line-height: 1.3; }
+.comparetable .cmpremove { margin-top: 4px; border: none; background: none; color: var(--accent); font: inherit; font-size: 11px; cursor: pointer; padding: 0; }
+.comparetable th.rowlabel {
+  position: sticky; left: 0; z-index: 2; background: #fbfcfd; color: var(--muted);
+  font-weight: 500; min-width: 150px; white-space: nowrap;
+}
+.comparetable thead th.rowlabel { z-index: 3; background: #eef1f5; }
+.comparetable .colyear { color: var(--accent); font-size: 11px; }
+.comparetable tbody td.best { font-weight: 700; color: #1a7f37; background: #eafbee; }
+.comparetable td { font-variant-numeric: tabular-nums; }
+
+/* ---- list view ---- */
+.listwrap { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; }
+.listhead { padding: 14px 18px 10px; border-bottom: 1px solid var(--border); background: #fbfcfd; }
+.listcount { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+
+.centre { display: block; }
+.centrelabel {
+  display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--muted); margin-bottom: 6px;
+}
+.centrerow { display: flex; gap: 8px; max-width: 420px; }
+.centrerow input {
+  flex: 1; padding: 8px 10px; font: inherit; font-size: 14px;
+  border: 1px solid var(--border); border-radius: 8px; background: #fff;
+}
+.centrerow input:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+.centrerow button {
+  padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: #fff;
+}
+.centrerow button:hover { background: #164e96; }
+.centrenow { margin: 6px 2px 0; font-size: 12px; color: var(--muted); }
+
+.listempty { padding: 40px 24px; max-width: 460px; color: var(--muted); line-height: 1.6; }
+.listempty p { margin: 0 0 8px; }
+
+.listscroll { flex: 1; overflow: auto; }
+.schooltable { width: 100%; border-collapse: collapse; font-size: 13px; }
+.schooltable thead th {
+  position: sticky; top: 0; z-index: 1; background: #f4f6f9; text-align: left;
+  padding: 8px 10px; font-weight: 600; font-size: 12px; color: var(--ink);
+  border-bottom: 1px solid var(--border); cursor: pointer; white-space: nowrap; user-select: none;
+}
+.schooltable thead th.num { text-align: right; }
+.schooltable thead th:hover { background: #e9edf3; }
+.schooltable thead th.sorted { color: var(--accent); }
+.schooltable thead th .colyear {
+  display: block; font-weight: 500; font-size: 10px; color: var(--accent); margin-top: 1px;
+}
+.schooltable thead th .arrow { font-size: 9px; margin-left: 3px; color: var(--accent); }
+.schooltable tbody td {
+  padding: 8px 10px; border-bottom: 1px solid var(--border);
+  vertical-align: top; font-variant-numeric: tabular-nums;
+}
+.schooltable tbody td.num { text-align: right; white-space: nowrap; }
+.schooltable tbody tr { cursor: pointer; }
+.schooltable tbody tr:hover { background: #eef3fb; }
+.schooltable td.nm { min-width: 200px; }
+.schooltable .cmpcol { width: 28px; text-align: center; padding-left: 12px; padding-right: 4px; }
+.schooltable thead th.cmpcol { cursor: default; color: var(--muted); }
+.schooltable thead th.cmpcol:hover { background: #f4f6f9; }
+.schooltable tbody td.cmpcol input { cursor: pointer; }
+.schooltable .tname { display: block; font-weight: 600; }
+.schooltable .tmeta { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+.schooltable .ftag {
+  display: inline-block; font-size: 10px; padding: 0 5px; border-radius: 4px; font-weight: 600;
+}
+.schooltable .ftag.state { background: #eaf1fb; color: #2c6fb0; }
+.schooltable .ftag.indep { background: #fdecec; color: #c0392b; }
+
 /* ---- detail card ---- */
 .detail {
   position: absolute; top: 12px; right: 12px; width: 320px; max-height: calc(100% - 24px);
@@ -107,6 +228,12 @@ select, input[type="range"] { font: inherit; }
   font-size: 22px; line-height: 1; cursor: pointer; color: var(--muted);
 }
 .detail h3 { margin: 0 6px 2px 0; font-size: 16px; padding-right: 16px; }
+.detail .cmpbtn {
+  margin: 6px 0 10px; padding: 5px 12px; font: inherit; font-size: 12px; font-weight: 600;
+  border: 1px solid var(--accent); border-radius: 8px; background: #fff; color: var(--accent); cursor: pointer;
+}
+.detail .cmpbtn.on { background: var(--accent); color: #fff; }
+.detail .cmpbtn:disabled { opacity: .5; cursor: default; border-color: var(--border); color: var(--muted); }
 .detail .sub { margin: 0 0 4px; color: var(--muted); font-size: 12px; line-height: 1.5; }
 .detail .stage { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
 .detail table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -150,3 +277,40 @@ select, input[type="range"] { font: inherit; }
 .detail .tag.indep { background: #fdecec; color: #c0392b; }
 .detail .tag.state { background: #eaf1fb; color: #2c6fb0; }
 .maplibregl-popup { max-width: 260px; }
+
+/* ---- mobile: collapsible panel + roomier tap targets ---- */
+@media (max-width: 640px) {
+  /* floating button that opens the filter panel (over the map / list) */
+  .panel-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    position: fixed; top: 10px; left: 10px; z-index: 30;
+    padding: 9px 13px; font: inherit; font-size: 13px; font-weight: 600;
+    color: var(--ink); background: #fff; border: 1px solid var(--border);
+    border-radius: 8px; box-shadow: 0 2px 10px #0003; cursor: pointer;
+  }
+
+  /* the panel becomes a slide-in overlay instead of a fixed-width column */
+  .panel {
+    position: fixed; inset: 0 auto 0 0; z-index: 40;
+    width: 88%; max-width: 360px; flex: none;
+    transform: translateX(-100%); transition: transform .22s ease;
+    box-shadow: 0 0 40px #0005;
+  }
+  .app.panel-open .panel { transform: translateX(0); }
+  .panel-backdrop { display: block; position: fixed; inset: 0; z-index: 35; background: #0006; }
+
+  .panelclose {
+    display: inline-flex; align-items: center; justify-content: center;
+    position: absolute; top: 8px; right: 10px; width: 32px; height: 32px;
+    border: none; background: none; font-size: 26px; line-height: 1;
+    color: var(--muted); cursor: pointer;
+  }
+  .panel h1 { padding-right: 34px; }
+
+  /* main content fills the screen; leave room up top for the floating button */
+  .detail { top: 8px; left: 8px; right: 8px; width: auto; max-height: calc(100% - 16px); }
+  .listhead { padding: 54px 12px 10px; }
+  .centrerow { max-width: none; }
+  .comparehead { padding: 52px 12px 10px; }
+  .comparetable th.rowlabel, .comparetable thead th { min-width: 120px; }
+}

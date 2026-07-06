@@ -9,7 +9,9 @@ const BANDS = [
 
 // Detail card for a clicked school. Also the natural home (later) for the
 // commute / house-price / jobs enrichment (Milestones 3–4).
-export default function SchoolDetail({ school: p, year, onClose }) {
+export default function SchoolDetail({
+  school: p, year, onClose, inCompare, compareFull, onToggleCompare,
+}) {
   const p8 = METRIC_BY_KEY.progress8;
   const a8 = METRIC_BY_KEY.attainment8;
   const ages =
@@ -19,6 +21,16 @@ export default function SchoolDetail({ school: p, year, onClose }) {
     <div className="detail">
       <button className="close" onClick={onClose} aria-label="Close">×</button>
       <h3>{p.name}</h3>
+      {onToggleCompare && (
+        <button
+          className={`cmpbtn ${inCompare ? "on" : ""}`}
+          onClick={() => onToggleCompare(p.urn)}
+          disabled={!inCompare && compareFull}
+          title={!inCompare && compareFull ? "Compare list is full (max 5)" : ""}
+        >
+          {inCompare ? "✓ In compare" : compareFull ? "Compare full (5)" : "+ Add to compare"}
+        </button>
+      )}
       <p className="sub">
         <span className={`tag ${p.funding === "Independent" ? "indep" : "state"}`}>
           {p.funding}
