@@ -1,0 +1,1124 @@
+[
+ {
+  "dist_km": 0.8,
+  "name": "Hornsey School for Girls",
+  "urn": "102153",
+  "la": "Haringey",
+  "postcode": "N8 9JF",
+  "type": "Community school",
+  "stage": "Secondary (no sixth form)",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": null,
+  "ofsted_new": {},
+  "p8": {
+   "2022": 0.1,
+   "2023": 0.29,
+   "2024": 0.38,
+   "avg": 0.26
+  },
+  "p8_pct": {
+   "2022": 57.8,
+   "2023": 72.5,
+   "2024": 77.9,
+   "avg": 71.2
+  },
+  "p8_ci_2024": [
+   0.13,
+   0.62
+  ],
+  "p8_bands_avg": [
+   0.49,
+   0.17,
+   0.27
+  ],
+  "a8": {
+   "2024": 49.5,
+   "avg": 50.37
+  },
+  "a8_avg_pct": 69.4,
+  "basics": 48.7,
+  "basics_pct": 61.8,
+  "ebacc": 4.3,
+  "absence": 9.9,
+  "absence_pct": 31.6,
+  "pa": 34.1,
+  "website": "http://www.hsg.haringey.sch.uk/",
+  "lat": 51.581867,
+  "lon": -0.114922
+ },
+ {
+  "dist_km": 1.07,
+  "name": "Skinners' Academy",
+  "urn": "136137",
+  "la": "Hackney",
+  "postcode": "N4 1SY",
+  "type": "Academy sponsor led",
+  "stage": "Secondary with sixth form",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "report_card_2025",
+   "ofsted_achievement": "Expected standard",
+   "ofsted_behaviour": "Expected standard",
+   "ofsted_curriculum": "Expected standard",
+   "ofsted_leadership": "Expected standard",
+   "ofsted_inclusion": "Expected standard",
+   "ofsted_personal_dev": "Expected standard"
+  },
+  "p8": {
+   "2022": -0.34,
+   "2023": -0.21,
+   "2024": 0.16,
+   "avg": -0.13
+  },
+  "p8_pct": {
+   "2022": 23.4,
+   "2023": 33.8,
+   "2024": 61.4,
+   "avg": 39.9
+  },
+  "p8_ci_2024": [
+   -0.07,
+   0.39
+  ],
+  "p8_bands_avg": [
+   0.29,
+   -0.22,
+   -0.15
+  ],
+  "a8": {
+   "2024": 46.1,
+   "avg": 46.47
+  },
+  "a8_avg_pct": 52.2,
+  "basics": 43.1,
+  "basics_pct": 49.9,
+  "ebacc": 4.19,
+  "absence": 9.8,
+  "absence_pct": 33.2,
+  "pa": 32.3,
+  "website": "http://www.skinnersacademy.org.uk",
+  "lat": 51.573338,
+  "lon": -0.092965
+ },
+ {
+  "dist_km": 1.18,
+  "name": "Park View School",
+  "urn": "131757",
+  "la": "Haringey",
+  "postcode": "N15 3QR",
+  "type": "Community school",
+  "stage": "Secondary (no sixth form)",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": -0.16,
+   "2023": -0.09,
+   "2024": 0.01,
+   "avg": -0.08
+  },
+  "p8_pct": {
+   "2022": 36.5,
+   "2023": 43.7,
+   "2024": 51.3,
+   "avg": 44.3
+  },
+  "p8_ci_2024": [
+   -0.19,
+   0.21
+  ],
+  "p8_bands_avg": [
+   0.02,
+   -0.2,
+   0.04
+  ],
+  "a8": {
+   "2024": 38.7,
+   "avg": 39.67
+  },
+  "a8_avg_pct": 23.9,
+  "basics": 29.6,
+  "basics_pct": 25.9,
+  "ebacc": 3.4,
+  "absence": 6.1,
+  "absence_pct": 87.7,
+  "pa": 14.9,
+  "website": "https://www.parkview.haringey.sch.uk",
+  "lat": 51.587192,
+  "lon": -0.090566
+ },
+ {
+  "dist_km": 1.25,
+  "name": "Greig City Academy",
+  "urn": "133386",
+  "la": "Haringey",
+  "postcode": "N8 7NU",
+  "type": "Academy sponsor led",
+  "stage": "Secondary with sixth form",
+  "faith": "Church of England",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": 0.14,
+   "2023": 0.27,
+   "2024": 0.47,
+   "avg": 0.29
+  },
+  "p8_pct": {
+   "2022": 61.1,
+   "2023": 71.1,
+   "2024": 82.6,
+   "avg": 73.4
+  },
+  "p8_ci_2024": [
+   0.23,
+   0.71
+  ],
+  "p8_bands_avg": [
+   0.6,
+   0.15,
+   0.09
+  ],
+  "a8": {
+   "2024": 43.3,
+   "avg": 44.0
+  },
+  "a8_avg_pct": 41.5,
+  "basics": 38.0,
+  "basics_pct": 40.7,
+  "ebacc": 3.62,
+  "absence": 9.5,
+  "absence_pct": 37.2,
+  "pa": 29.8,
+  "website": "https://www.greigcityacademy.co.uk",
+  "lat": 51.587387,
+  "lon": -0.117696
+ },
+ {
+  "dist_km": 1.69,
+  "name": "Arts and Media School Islington",
+  "urn": "131690",
+  "la": "Islington",
+  "postcode": "N4 3LS",
+  "type": "Foundation school",
+  "stage": "Secondary (no sixth form)",
+  "faith": null,
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": 0.14,
+   "2023": -0.25,
+   "2024": 0.17,
+   "avg": 0.02
+  },
+  "p8_pct": {
+   "2022": 61.1,
+   "2023": 30.8,
+   "2024": 62.4,
+   "avg": 52.6
+  },
+  "p8_ci_2024": [
+   -0.1,
+   0.43
+  ],
+  "p8_bands_avg": [
+   0.03,
+   0.07,
+   -0.26
+  ],
+  "a8": {
+   "2024": 45.0,
+   "avg": 43.6
+  },
+  "a8_avg_pct": 39.8,
+  "basics": 49.2,
+  "basics_pct": 63.0,
+  "ebacc": 3.81,
+  "absence": 13.3,
+  "absence_pct": 6.0,
+  "pa": 45.5,
+  "website": "https://www.artsandmedia.islington.sch.uk",
+  "lat": 51.567072,
+  "lon": -0.115895
+ },
+ {
+  "dist_km": 2.04,
+  "name": "Highgate Wood Secondary School",
+  "urn": "102154",
+  "la": "Haringey",
+  "postcode": "N8 8RN",
+  "type": "Community school",
+  "stage": "Secondary with sixth form",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": null,
+  "ofsted_new": {
+   "ofsted_framework": "report_card_2025",
+   "ofsted_achievement": "Expected standard",
+   "ofsted_behaviour": "Strong standard",
+   "ofsted_curriculum": "Expected standard",
+   "ofsted_leadership": "Expected standard",
+   "ofsted_inclusion": "Expected standard",
+   "ofsted_personal_dev": "Expected standard"
+  },
+  "p8": {
+   "2022": 0.19,
+   "2023": 0.15,
+   "2024": 0.26,
+   "avg": 0.2
+  },
+  "p8_pct": {
+   "2022": 64.7,
+   "2023": 62.8,
+   "2024": 69.6,
+   "avg": 67.0
+  },
+  "p8_ci_2024": [
+   0.08,
+   0.44
+  ],
+  "p8_bands_avg": [
+   -0.08,
+   0.23,
+   0.29
+  ],
+  "a8": {
+   "2024": 50.8,
+   "avg": 52.93
+  },
+  "a8_avg_pct": 78.1,
+  "basics": 50.8,
+  "basics_pct": 65.8,
+  "ebacc": 4.41,
+  "absence": 6.9,
+  "absence_pct": 79.4,
+  "pa": 16.6,
+  "website": "http://www.hws.haringey.sch.uk/",
+  "lat": 51.581438,
+  "lon": -0.133126
+ },
+ {
+  "dist_km": 2.08,
+  "name": "All Saints Catholic High School",
+  "urn": "100282",
+  "la": "Hackney",
+  "postcode": "N16 5AF",
+  "type": "Voluntary aided school",
+  "stage": "Secondary with sixth form",
+  "faith": "Roman Catholic",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": 0.12,
+   "2023": 0.31,
+   "2024": 0.27,
+   "avg": 0.23
+  },
+  "p8_pct": {
+   "2022": 59.7,
+   "2023": 73.7,
+   "2024": 70.3,
+   "avg": 69.1
+  },
+  "p8_ci_2024": [
+   -0.03,
+   0.57
+  ],
+  "p8_bands_avg": [
+   0.84,
+   0.05,
+   -0.27
+  ],
+  "a8": {
+   "2024": 42.5,
+   "avg": 45.77
+  },
+  "a8_avg_pct": 49.1,
+  "basics": 40.4,
+  "basics_pct": 45.1,
+  "ebacc": 3.86,
+  "absence": 8.1,
+  "absence_pct": 60.7,
+  "pa": 25.0,
+  "website": "https://www.allsaintschs.co.uk",
+  "lat": 51.574271,
+  "lon": -0.075233
+ },
+ {
+  "dist_km": 2.22,
+  "name": "Heartlands High School",
+  "urn": "139616",
+  "la": "Haringey",
+  "postcode": "N22 7ST",
+  "type": "Academy converter",
+  "stage": "Secondary (no sixth form)",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": null,
+  "ofsted_new": {},
+  "p8": {
+   "2022": 0.4,
+   "2023": 0.42,
+   "2024": 0.37,
+   "avg": 0.4
+  },
+  "p8_pct": {
+   "2022": 78.3,
+   "2023": 80.1,
+   "2024": 77.1,
+   "avg": 80.0
+  },
+  "p8_ci_2024": [
+   0.19,
+   0.56
+  ],
+  "p8_bands_avg": [
+   0.64,
+   0.36,
+   0.21
+  ],
+  "a8": {
+   "2024": 49.9,
+   "avg": 50.37
+  },
+  "a8_avg_pct": 69.4,
+  "basics": 51.5,
+  "basics_pct": 67.0,
+  "ebacc": 4.52,
+  "absence": 10.7,
+  "absence_pct": 21.2,
+  "pa": 34.6,
+  "website": "http://heartlands.haringey.sch.uk/",
+  "lat": 51.59774,
+  "lon": -0.119521
+ },
+ {
+  "dist_km": 2.25,
+  "name": "City of London Academy, Highgate Hill",
+  "urn": "143659",
+  "la": "Islington",
+  "postcode": "N19 3EU",
+  "type": "Free schools",
+  "stage": "Secondary with sixth form",
+  "faith": null,
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": -0.56,
+   "2023": -0.22,
+   "2024": 0.12,
+   "avg": -0.22
+  },
+  "p8_pct": {
+   "2022": 12.8,
+   "2023": 33.0,
+   "2024": 58.4,
+   "avg": 32.5
+  },
+  "p8_ci_2024": [
+   -0.15,
+   0.39
+  ],
+  "p8_bands_avg": [
+   -0.14,
+   -0.26,
+   -0.18
+  ],
+  "a8": {
+   "2024": 45.5,
+   "avg": 43.0
+  },
+  "a8_avg_pct": 36.9,
+  "basics": 45.5,
+  "basics_pct": 54.7,
+  "ebacc": 4.2,
+  "absence": 7.5,
+  "absence_pct": 70.7,
+  "pa": 20.4,
+  "website": "http://www.highgatehill.cola.org.uk/",
+  "lat": 51.567972,
+  "lon": -0.129436
+ },
+ {
+  "dist_km": 2.28,
+  "name": "Lubavitch House School (Senior Girls)",
+  "urn": "145609",
+  "la": "Hackney",
+  "postcode": "N16 5RP",
+  "type": "Academy converter",
+  "stage": "Secondary with sixth form",
+  "faith": "Jewish",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": -0.62,
+   "2023": 1.34,
+   "2024": 0.02,
+   "avg": 0.25
+  },
+  "p8_pct": {
+   "2022": 10.6,
+   "2023": 99.5,
+   "2024": 51.9,
+   "avg": 70.4
+  },
+  "p8_ci_2024": [
+   -0.9,
+   0.95
+  ],
+  "p8_bands_avg": [
+   null,
+   1.07,
+   0.57
+  ],
+  "a8": {
+   "2024": 41.5,
+   "avg": 49.63
+  },
+  "a8_avg_pct": 66.3,
+  "basics": 46.7,
+  "basics_pct": 57.6,
+  "ebacc": 3.36,
+  "absence": 10.6,
+  "absence_pct": 22.3,
+  "pa": 35.4,
+  "website": "https://www.lubavitchseniorgirls.com",
+  "lat": 51.572234,
+  "lon": -0.073298
+ },
+ {
+  "dist_km": 2.55,
+  "name": "Yesodey Hatorah Senior Girls School",
+  "urn": "133599",
+  "la": "Hackney",
+  "postcode": "N16 6UB",
+  "type": "Voluntary aided school",
+  "stage": "Secondary (no sixth form)",
+  "faith": "Jewish",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": 0.37,
+   "2023": 1.65,
+   "2024": 0.92,
+   "avg": 0.98
+  },
+  "p8_pct": {
+   "2022": 76.3,
+   "2023": 99.8,
+   "2024": 96.5,
+   "avg": 98.0
+  },
+  "p8_ci_2024": [
+   0.48,
+   1.35
+  ],
+  "p8_bands_avg": [
+   0.84,
+   1.15,
+   0.93
+  ],
+  "a8": {
+   "2024": 52.2,
+   "avg": 52.4
+  },
+  "a8_avg_pct": 76.1,
+  "basics": 60.3,
+  "basics_pct": 80.3,
+  "ebacc": 4.24,
+  "absence": 5.9,
+  "absence_pct": 89.5,
+  "pa": 15.1,
+  "website": "https://yesodeyhatorah.org",
+  "lat": 51.57352,
+  "lon": -0.068366
+ },
+ {
+  "dist_km": 2.57,
+  "name": "Mulberry Academy Woodside",
+  "urn": "137745",
+  "la": "Haringey",
+  "postcode": "N22 5QJ",
+  "type": "Academy converter",
+  "stage": "Secondary (no sixth form)",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": -0.08,
+   "2023": -0.09,
+   "2024": 0.17,
+   "avg": 0.0
+  },
+  "p8_pct": {
+   "2022": 43.2,
+   "2023": 43.7,
+   "2024": 62.4,
+   "avg": 51.3
+  },
+  "p8_ci_2024": [
+   -0.02,
+   0.36
+  ],
+  "p8_bands_avg": [
+   0.23,
+   -0.0,
+   -0.27
+  ],
+  "a8": {
+   "2024": 45.8,
+   "avg": 46.1
+  },
+  "a8_avg_pct": 50.8,
+  "basics": 40.4,
+  "basics_pct": 45.1,
+  "ebacc": 4.21,
+  "absence": 6.5,
+  "absence_pct": 84.2,
+  "pa": 18.1,
+  "website": "https://www.mulberrywoodside.org",
+  "lat": 51.603502,
+  "lon": -0.100957
+ },
+ {
+  "dist_km": 2.6,
+  "name": "Gladesmore Community School",
+  "urn": "102157",
+  "la": "Haringey",
+  "postcode": "N15 6EB",
+  "type": "Community school",
+  "stage": "Secondary (no sixth form)",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": null,
+  "ofsted_new": {},
+  "p8": {
+   "2022": 0.01,
+   "2023": -0.3,
+   "2024": -0.02,
+   "avg": -0.1
+  },
+  "p8_pct": {
+   "2022": 51.2,
+   "2023": 27.0,
+   "2024": 48.9,
+   "avg": 42.4
+  },
+  "p8_ci_2024": [
+   -0.2,
+   0.15
+  ],
+  "p8_bands_avg": [
+   -0.09,
+   -0.13,
+   -0.09
+  ],
+  "a8": {
+   "2024": 46.5,
+   "avg": 45.8
+  },
+  "a8_avg_pct": 49.3,
+  "basics": 44.8,
+  "basics_pct": 53.3,
+  "ebacc": 4.51,
+  "absence": 9.8,
+  "absence_pct": 33.2,
+  "pa": 34.1,
+  "website": "http://www.gladesmore.com/",
+  "lat": 51.580065,
+  "lon": -0.066082
+ },
+ {
+  "dist_km": 2.69,
+  "name": "St Thomas More Catholic School",
+  "urn": "139362",
+  "la": "Haringey",
+  "postcode": "N22 5HN",
+  "type": "Academy converter",
+  "stage": "Secondary with sixth form",
+  "faith": "Roman Catholic",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Outstanding",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": 0.61,
+   "2023": 0.39,
+   "2024": 0.46,
+   "avg": 0.49
+  },
+  "p8_pct": {
+   "2022": 89.1,
+   "2023": 78.7,
+   "2024": 82.2,
+   "avg": 84.0
+  },
+  "p8_ci_2024": [
+   0.27,
+   0.66
+  ],
+  "p8_bands_avg": [
+   0.69,
+   0.49,
+   0.28
+  ],
+  "a8": {
+   "2024": 50.0,
+   "avg": 52.47
+  },
+  "a8_avg_pct": 76.3,
+  "basics": 50.5,
+  "basics_pct": 65.2,
+  "ebacc": 4.6,
+  "absence": 5.0,
+  "absence_pct": 96.0,
+  "pa": 10.7,
+  "website": "https://www.stthomasmoreschool.org.uk",
+  "lat": 51.604474,
+  "lon": -0.108787
+ },
+ {
+  "dist_km": 2.7,
+  "name": "St Aloysius' College",
+  "urn": "151990",
+  "la": "Islington",
+  "postcode": "N6 5LY",
+  "type": "Academy converter",
+  "stage": "Secondary with sixth form",
+  "faith": "Roman Catholic",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": null,
+   "2023": null,
+   "2024": null,
+   "avg": null
+  },
+  "p8_pct": {
+   "2022": null,
+   "2023": null,
+   "2024": null,
+   "avg": null
+  },
+  "p8_ci_2024": [
+   null,
+   null
+  ],
+  "p8_bands_avg": [
+   null,
+   null,
+   null
+  ],
+  "a8": {
+   "2024": null,
+   "avg": null
+  },
+  "a8_avg_pct": null,
+  "basics": null,
+  "basics_pct": null,
+  "ebacc": null,
+  "absence": null,
+  "absence_pct": null,
+  "pa": null,
+  "website": "https://www.sta.islington.sch.uk",
+  "lat": 51.569766,
+  "lon": -0.138785
+ },
+ {
+  "dist_km": 2.81,
+  "name": "Stoke Newington School and Sixth Form",
+  "urn": "100279",
+  "la": "Hackney",
+  "postcode": "N16 9EX",
+  "type": "Community school",
+  "stage": "Secondary with sixth form",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": null,
+  "ofsted_new": {},
+  "p8": {
+   "2022": -0.07,
+   "2023": -0.19,
+   "2024": 0.28,
+   "avg": 0.01
+  },
+  "p8_pct": {
+   "2022": 44.1,
+   "2023": 35.3,
+   "2024": 71.2,
+   "avg": 51.9
+  },
+  "p8_ci_2024": [
+   0.1,
+   0.46
+  ],
+  "p8_bands_avg": [
+   -0.02,
+   -0.05,
+   0.12
+  ],
+  "a8": {
+   "2024": 52.2,
+   "avg": 51.1
+  },
+  "a8_avg_pct": 72.2,
+  "basics": 56.2,
+  "basics_pct": 74.8,
+  "ebacc": 4.38,
+  "absence": 8.0,
+  "absence_pct": 62.2,
+  "pa": 23.2,
+  "website": "http://www.sns.hackney.sch.uk/",
+  "lat": 51.557887,
+  "lon": -0.084609
+ },
+ {
+  "dist_km": 3.05,
+  "name": "Highbury Fields School",
+  "urn": "100455",
+  "la": "Islington",
+  "postcode": "N5 1AR",
+  "type": "Community school",
+  "stage": "Secondary with sixth form",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": null,
+  "ofsted_new": {},
+  "p8": {
+   "2022": 0.6,
+   "2023": 0.82,
+   "2024": 0.43,
+   "avg": 0.62
+  },
+  "p8_pct": {
+   "2022": 88.5,
+   "2023": 94.7,
+   "2024": 80.6,
+   "avg": 89.3
+  },
+  "p8_ci_2024": [
+   0.17,
+   0.68
+  ],
+  "p8_bands_avg": [
+   0.71,
+   0.62,
+   0.52
+  ],
+  "a8": {
+   "2024": 51.4,
+   "avg": 54.77
+  },
+  "a8_avg_pct": 83.2,
+  "basics": 56.7,
+  "basics_pct": 75.5,
+  "ebacc": 4.56,
+  "absence": 9.0,
+  "absence_pct": 45.5,
+  "pa": 26.6,
+  "website": "http://www.highburyfields.islington.sch.uk/",
+  "lat": 51.552803,
+  "lon": -0.101526
+ },
+ {
+  "dist_km": 3.24,
+  "name": "Harris Academy Tottenham",
+  "urn": "140935",
+  "la": "Haringey",
+  "postcode": "N17 9LN",
+  "type": "Free schools",
+  "stage": "All-through (primary + secondary)",
+  "faith": null,
+  "selective": false,
+  "admissions": null,
+  "ofsted_legacy": null,
+  "ofsted_new": {},
+  "p8": {
+   "2022": 0.17,
+   "2023": 0.17,
+   "2024": 0.66,
+   "avg": 0.33
+  },
+  "p8_pct": {
+   "2022": 63.4,
+   "2023": 64.1,
+   "2024": 89.7,
+   "avg": 76.0
+  },
+  "p8_ci_2024": [
+   0.45,
+   0.86
+  ],
+  "p8_bands_avg": [
+   0.5,
+   0.42,
+   -0.13
+  ],
+  "a8": {
+   "2024": 54.1,
+   "avg": 49.3
+  },
+  "a8_avg_pct": 65.1,
+  "basics": 65.8,
+  "basics_pct": 86.0,
+  "ebacc": 5.19,
+  "absence": 7.3,
+  "absence_pct": 74.2,
+  "pa": 22.4,
+  "website": "https://www.harristottenham.org.uk",
+  "lat": 51.591317,
+  "lon": -0.060234
+ },
+ {
+  "dist_km": 3.33,
+  "name": "Alexandra Park School",
+  "urn": "137531",
+  "la": "Haringey",
+  "postcode": "N11 2AZ",
+  "type": "Academy converter",
+  "stage": "Secondary with sixth form",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Outstanding",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": 0.41,
+   "2023": 0.96,
+   "2024": 0.81,
+   "avg": 0.73
+  },
+  "p8_pct": {
+   "2022": 79.1,
+   "2023": 97.1,
+   "2024": 94.2,
+   "avg": 93.1
+  },
+  "p8_ci_2024": [
+   0.62,
+   0.99
+  ],
+  "p8_bands_avg": [
+   0.76,
+   0.82,
+   0.62
+  ],
+  "a8": {
+   "2024": 61.3,
+   "avg": 62.9
+  },
+  "a8_avg_pct": 93.8,
+  "basics": 78.6,
+  "basics_pct": 93.2,
+  "ebacc": 5.57,
+  "absence": 5.7,
+  "absence_pct": 91.0,
+  "pa": 12.5,
+  "website": "https://www.alexandrapark.school",
+  "lat": 51.602065,
+  "lon": -0.136959
+ },
+ {
+  "dist_km": 3.4,
+  "name": "City of London Academy Highbury Grove",
+  "urn": "144962",
+  "la": "Islington",
+  "postcode": "N5 2EQ",
+  "type": "Academy sponsor led",
+  "stage": "Secondary with sixth form",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": -0.21,
+   "2023": -0.36,
+   "2024": 0.09,
+   "avg": -0.16
+  },
+  "p8_pct": {
+   "2022": 32.5,
+   "2023": 23.0,
+   "2024": 56.6,
+   "avg": 37.5
+  },
+  "p8_ci_2024": [
+   -0.11,
+   0.3
+  ],
+  "p8_bands_avg": [
+   -0.06,
+   -0.19,
+   -0.2
+  ],
+  "a8": {
+   "2024": 47.2,
+   "avg": 44.6
+  },
+  "a8_avg_pct": 44.1,
+  "basics": 51.6,
+  "basics_pct": 67.3,
+  "ebacc": 4.36,
+  "absence": 10.3,
+  "absence_pct": 25.9,
+  "pa": 28.5,
+  "website": "https://www.highburygrove.cola.org.uk",
+  "lat": 51.549839,
+  "lon": -0.0979
+ },
+ {
+  "dist_km": 3.47,
+  "name": "Lift Beacon High",
+  "urn": "152337",
+  "la": "Islington",
+  "postcode": "N7 0JG",
+  "type": "Academy converter",
+  "stage": "Secondary (no sixth form)",
+  "faith": "Does not apply",
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": null,
+   "2023": null,
+   "2024": null,
+   "avg": null
+  },
+  "p8_pct": {
+   "2022": null,
+   "2023": null,
+   "2024": null,
+   "avg": null
+  },
+  "p8_ci_2024": [
+   null,
+   null
+  ],
+  "p8_bands_avg": [
+   null,
+   null,
+   null
+  ],
+  "a8": {
+   "2024": null,
+   "avg": null
+  },
+  "a8_avg_pct": null,
+  "basics": null,
+  "basics_pct": null,
+  "ebacc": null,
+  "absence": null,
+  "absence_pct": null,
+  "pa": null,
+  "website": "http://www.liftbeaconhigh.org/",
+  "lat": 51.553636,
+  "lon": -0.129923
+ },
+ {
+  "dist_km": 3.56,
+  "name": "Fortismere School",
+  "urn": "102156",
+  "la": "Haringey",
+  "postcode": "N10 1NE",
+  "type": "Foundation school",
+  "stage": "Secondary with sixth form",
+  "faith": null,
+  "selective": false,
+  "admissions": "Non-selective",
+  "ofsted_legacy": "Good",
+  "ofsted_new": {
+   "ofsted_framework": "legacy"
+  },
+  "p8": {
+   "2022": 0.52,
+   "2023": 0.6,
+   "2024": 0.49,
+   "avg": 0.54
+  },
+  "p8_pct": {
+   "2022": 85.1,
+   "2023": 87.8,
+   "2024": 83.3,
+   "avg": 86.0
+  },
+  "p8_ci_2024": [
+   0.31,
+   0.67
+  ],
+  "p8_bands_avg": [
+   0.61,
+   0.7,
+   0.35
+  ],
+  "a8": {
+   "2024": 57.8,
+   "avg": 59.7
+  },
+  "a8_avg_pct": 90.8,
+  "basics": 70.6,
+  "basics_pct": 89.6,
+  "ebacc": 5.19,
+  "absence": 7.9,
+  "absence_pct": 63.9,
+  "pa": 23.7,
+  "website": "https://www.fortismere.haringey.sch.uk",
+  "lat": 51.592853,
+  "lon": -0.150979
+ }
+]

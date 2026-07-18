@@ -1,0 +1,364 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>School Choice Report — N4 1AZ</title></head><body class="standalone"><style>.scr {
+  /* palette tokens (light) */
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #14150f; --ink2: #52514e;
+  --muted: #898781; --grid: #e1e0d9; --axis: #c3c2b7; --hairline: rgba(11,11,11,.10);
+  --accent: #1c5cab; --accent-soft: #cde2fb; --bar: #2a78d6; --neg: #e34948;
+  --good: #0ca30c; --good-bg: rgba(12,163,12,.11); --good-ink: #0a5c0a;
+  --warn: #fab219; --warn-bg: rgba(250,178,25,.16); --warn-ink: #6e4e04;
+  --crit: #d03b3b; --crit-bg: rgba(208,59,59,.10); --crit-ink: #8f2323;
+  --neut: #898781; --neut-bg: rgba(137,135,129,.13); --neut-ink: #52514e;
+  --serif: "Charter", "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+  background: var(--page); color: var(--ink);
+  font: 16px/1.55 var(--sans);
+  max-width: 900px; margin: 0 auto; padding: 0 24px 64px;
+}
+body.standalone { margin: 0; background: #f9f9f7; }
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .scr {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #f2f1ec; --ink2: #c3c2b7;
+    --muted: #898781; --grid: #2c2c2a; --axis: #383835; --hairline: rgba(255,255,255,.12);
+    --accent: #6da7ec; --accent-soft: #16385f; --bar: #3987e5; --neg: #e66767;
+    --good-bg: rgba(12,163,12,.18); --good-ink: #7ed87e;
+    --warn-bg: rgba(250,178,25,.15); --warn-ink: #f5c95e;
+    --crit-bg: rgba(208,59,59,.18); --crit-ink: #f09a9a;
+    --neut-bg: rgba(137,135,129,.18); --neut-ink: #b6b4ac;
+  }
+  :root:where(:not([data-theme="light"])) body.standalone { background: #0d0d0d; }
+}
+:root[data-theme="dark"] .scr {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #f2f1ec; --ink2: #c3c2b7;
+  --muted: #898781; --grid: #2c2c2a; --axis: #383835; --hairline: rgba(255,255,255,.12);
+  --accent: #6da7ec; --accent-soft: #16385f; --bar: #3987e5; --neg: #e66767;
+  --good-bg: rgba(12,163,12,.18); --good-ink: #7ed87e;
+  --warn-bg: rgba(250,178,25,.15); --warn-ink: #f5c95e;
+  --crit-bg: rgba(208,59,59,.18); --crit-ink: #f09a9a;
+  --neut-bg: rgba(137,135,129,.18); --neut-ink: #b6b4ac;
+}
+:root[data-theme="dark"] body.standalone { background: #0d0d0d; }
+:root[data-theme="light"] .scr { color-scheme: light; }
+
+.scr * { box-sizing: border-box; }
+.scr a { color: var(--accent); }
+.scr h1, .scr h2, .scr h3 { font-family: var(--serif); text-wrap: balance; margin: 0; }
+.scr section { margin-top: 52px; }
+.scr h2 { font-size: 27px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 14px;
+  padding-top: 18px; border-top: 2px solid var(--ink); }
+.scr .lede { color: var(--ink2); max-width: 68ch; margin: 0 0 20px; }
+
+/* prototype banner */
+.proto { background: var(--warn-bg); color: var(--warn-ink); border: 1px solid rgba(250,178,25,.4);
+  border-radius: 6px; padding: 10px 14px; font-size: 13.5px; margin: 20px 0 0; }
+
+/* masthead */
+.mast { margin-top: 34px; padding-bottom: 22px; border-bottom: 2px solid var(--ink); }
+.brand { font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--accent); }
+.mast h1 { font-size: clamp(30px, 5.5vw, 46px); line-height: 1.08; margin: 8px 0 12px; font-weight: 700; }
+.mast .pc { white-space: nowrap; border-bottom: 5px solid var(--accent-soft); }
+.mastmeta { color: var(--ink2); font-size: 14px; }
+
+/* sixty-second summary */
+.sixty { margin: 0; padding: 0 0 0 0; list-style: none; max-width: 72ch; }
+.sixty li { padding: 10px 0 10px 18px; border-left: 3px solid var(--accent-soft); margin: 10px 0; }
+
+/* map */
+.maplegendwrap { background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px;
+  padding: 10px 14px 14px; margin-bottom: 18px; }
+.mapsvg { width: 100%; height: auto; display: block; }
+.ring { fill: none; stroke: var(--axis); stroke-dasharray: 3 5; }
+.ringlab { fill: var(--muted); font: 11px var(--sans); }
+.home { fill: var(--accent); }
+.homelab { fill: var(--ink); font: 700 12px var(--sans); }
+.dot { stroke: var(--surface); stroke-width: 2; }
+.dot.good { fill: var(--good); } .dot.warn { fill: var(--warn); }
+.dot.crit { fill: var(--crit); } .dot.neut { fill: var(--neut); }
+.dotn { fill: #fff; font: 700 10px var(--sans); pointer-events: none; }
+:root[data-theme="dark"] .scr .dotn, .dotn { paint-order: stroke; }
+.maplegend { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+
+/* verdict chips */
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.chip .dotmark { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.chip.good { background: var(--good-bg); color: var(--good-ink); } .chip.good .dotmark { background: var(--good); }
+.chip.warn { background: var(--warn-bg); color: var(--warn-ink); } .chip.warn .dotmark { background: var(--warn); }
+.chip.crit { background: var(--crit-bg); color: var(--crit-ink); } .chip.crit .dotmark { background: var(--crit); }
+.chip.neut { background: var(--neut-bg); color: var(--neut-ink); } .chip.neut .dotmark { background: var(--neut); }
+
+/* summary table */
+.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px; }
+.scr table { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 780px; }
+.scr th { text-align: left; font-weight: 600; color: var(--ink2); font-size: 11.5px;
+  text-transform: uppercase; letter-spacing: .05em; padding: 10px 10px; border-bottom: 1px solid var(--axis); }
+.scr td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+.scr tbody tr:last-child td { border-bottom: 0; }
+.scr th.num, .scr td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.tn { color: var(--muted); font-variant-numeric: tabular-nums; }
+.tname a { color: var(--ink); text-decoration: none; font-weight: 600; }
+.tname a:hover { color: var(--accent); }
+.tnote { display: block; color: var(--muted); font-size: 12px; }
+
+/* school cards */
+.card { background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px;
+  padding: 20px 22px; margin: 18px 0; }
+.cardhead { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
+.cardhead h3 { display: inline; font-size: 21px; font-weight: 700; }
+.cardn { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--ink);
+  color: var(--page); font: 700 11.5px/1 var(--sans); align-items: center; justify-content: center;
+  margin-right: 9px; vertical-align: 3px; flex: none; }
+.tags { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.why { max-width: 72ch; color: var(--ink2); margin: 12px 0 6px; }
+.charts { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 8px; }
+.charts figure { margin: 0; flex: 1 1 280px; max-width: 330px; }
+.charts figcaption { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--muted); margin-bottom: 4px; }
+.chart { width: 100%; height: auto; display: block; }
+.chart .grid { stroke: var(--grid); } .chart .axis { stroke: var(--axis); }
+.chart .tick { fill: var(--muted); font: 10.5px var(--sans); }
+.chart .tickb { font-weight: 700; fill: var(--ink2); }
+.chart .val { fill: var(--ink2); font: 600 10.5px var(--sans); font-variant-numeric: tabular-nums; }
+.chart .bar { fill: var(--bar); }
+.chart .pos { fill: var(--bar); } .chart .neg { fill: var(--neg); }
+.chart .ci { stroke: var(--muted); stroke-width: 1.4; }
+.chart .youline { stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.chart .you { fill: var(--accent); font: 700 11px var(--sans); }
+.chart .open { fill: var(--good-ink); font: 600 10px var(--sans); }
+.chart .na { fill: var(--muted); font: 10.5px var(--sans); }
+.appline { font-size: 12.5px; color: var(--ink2); margin-top: 2px; }
+.noadm { flex: 1 1 280px; max-width: 330px; display: flex; align-items: center;
+  color: var(--muted); font-size: 13.5px; border: 1px dashed var(--axis); border-radius: 8px;
+  padding: 12px; min-height: 90px; }
+
+/* percentile bar */
+.pctrow { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; }
+.pctlab { color: var(--muted); flex: none; }
+.pcttrack { flex: 1; height: 6px; border-radius: 3px; background: var(--grid); overflow: hidden; }
+.pctfill { display: block; height: 100%; background: var(--bar); border-radius: 3px; }
+.pctval { color: var(--ink2); font-weight: 600; flex: none; font-variant-numeric: tabular-nums; }
+
+/* stat grid */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px;
+  margin-top: 16px; border-top: 1px solid var(--grid); padding-top: 12px; }
+.statv { font-size: 19px; font-weight: 700; font-family: var(--serif); }
+.statl { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.statsub { font-size: 11px; color: var(--muted); }
+
+/* compact rows */
+.crows { display: flex; flex-direction: column; gap: 10px; }
+.crow { display: flex; gap: 14px; align-items: flex-start; background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: 10px; padding: 14px 16px; }
+.crow .cardn { margin-top: 2px; }
+.crmain { flex: 1; min-width: 220px; }
+.crmain strong { font-family: var(--serif); font-size: 16.5px; }
+.crsub { display: block; color: var(--ink2); font-size: 13.5px; margin-top: 3px; max-width: 60ch; }
+.crnum { flex: none; text-align: right; font-size: 13.5px; font-weight: 600;
+  font-variant-numeric: tabular-nums; min-width: 92px; }
+.crcut { color: var(--muted); font-weight: 400; font-size: 12px; }
+
+/* playbook */
+.playbook { max-width: 70ch; padding-left: 22px; margin: 0; }
+.playbook li { margin: 10px 0; }
+.playbook li::marker { font-weight: 700; color: var(--accent); }
+
+/* method + footer */
+.method p { max-width: 72ch; color: var(--ink2); }
+.src { margin-top: 52px; }
+.src h2 { font-size: 18px; border-top-width: 1px; border-color: var(--axis); }
+.src p { font-size: 13px; color: var(--muted); max-width: 80ch; }
+.fine { font-size: 12px; }
+
+@media (max-width: 640px) {
+  .scr { padding: 0 14px 48px; }
+  .cardhead { flex-direction: column; }
+  .crow { flex-wrap: wrap; }
+  .crnum { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) { .scr * { transition: none !important; } }
+</style>
+<div class="scr">
+<div class="proto">Prototype for user testing — a sample of the paid School Choice Report. Performance data is real (DfE / Ofsted, 2022–24 results). Admissions figures are real, from Haringey, Hackney and Islington council publications for entry years 2022–2026.</div>
+
+<header class="mast">
+  <div class="brand">School Choice Report</div>
+  <h1>Secondary schools from <span class="pc">N4 1AZ</span></h1>
+  <div class="mastmeta">Harringay / Finsbury Park · prepared 18 July 2026 · for entry September 2027 · apply by 31 October 2026</div>
+</header>
+
+<section>
+  <h2>The picture in sixty seconds</h2>
+  <ul class="sixty">
+    <li><strong>You have real, likely options close to home.</strong> Six schools — including three within a mile — have either offered every applicant a place recently or hold cut-offs far beyond your distance.</li>
+    <li><strong>The famous names are out of reach on distance.</strong> Fortismere, Alexandra Park and Stoke Newington all cut roughly a mile or more inside where you live, and have for years. Preferences spent there are usually preferences wasted.</li>
+    <li><strong>Your strongest realistic academic bets:</strong> Greig City Academy (P8 +0.29, 73rd percentile, ¾&nbsp;mi, likely) — and for a daughter, Hornsey School for Girls (P8 +0.26, rising three years straight, ½&nbsp;mi, likely). Heartlands (P8 +0.40, 80th percentile) is a genuine maybe worth a high preference.</li>
+    <li><strong>Harris Academy Tottenham is a rational lottery ticket:</strong> random allocation within bands means distance doesn't rule you out, and its results are strong (P8 +0.33).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Where you stand</h2>
+  <p class="lede">Every state secondary within about 2¼ miles of your door, numbered by distance. The verdicts compare your straight-line distance with each school's published cut-off history — the distance of the last child offered a place on national offer day.</p>
+  <div class="maplegendwrap"><svg class="mapsvg" viewBox="0 0 640 470" role="img" aria-label="Schematic map of schools around N4 1AZ"><circle cx="320.0" cy="235.0" r="118" class="ring"/><text x="397" y="148" class="ringlab" text-anchor="end">1 mile</text><circle cx="320.0" cy="235.0" r="236" class="ring"/><text x="481" y="64" class="ringlab" text-anchor="end">2 miles</text><rect x="315.0" y="230.0" width="10" height="10" transform="rotate(45 320.0 235.0)" class="home"/><text x="320.0" y="257.0" class="homelab" text-anchor="middle">N4 1AZ</text><circle cx="263" cy="223" r="9" class="dot good"><title>Hornsey School for Girls — 0.5 mi</title></circle><text x="263" y="226" class="dotn" text-anchor="middle">1</text><circle cx="374" cy="292" r="9" class="dot good"><title>Skinners&#x27; Academy — 0.66 mi</title></circle><text x="374" y="295" class="dotn" text-anchor="middle">2</text><circle cx="386" cy="179" r="9" class="dot good"><title>Park View School — 0.73 mi</title></circle><text x="386" y="183" class="dotn" text-anchor="middle">3</text><circle cx="249" cy="178" r="9" class="dot good"><title>Greig City Academy — 0.78 mi</title></circle><text x="249" y="181" class="dotn" text-anchor="middle">4</text><circle cx="258" cy="343" r="9" class="dot neut"><title>Arts and Media School Islington — 1.05 mi</title></circle><text x="258" y="346" class="dotn" text-anchor="middle">5</text><circle cx="170" cy="226" r="9" class="dot warn"><title>Highgate Wood Secondary School — 1.27 mi</title></circle><text x="170" y="230" class="dotn" text-anchor="middle">6</text><circle cx="464" cy="284" r="9" class="dot neut"><title>All Saints Catholic High School — 1.29 mi</title></circle><text x="464" y="288" class="dotn" text-anchor="middle">7</text><circle cx="239" cy="94" r="9" class="dot warn"><title>Heartlands High School — 1.38 mi</title></circle><text x="239" y="97" class="dotn" text-anchor="middle">8</text><circle cx="189" cy="335" r="9" class="dot neut"><title>City of London Academy, Highgate Hill — 1.4 mi</title></circle><text x="189" y="339" class="dotn" text-anchor="middle">9</text><circle cx="334" cy="47" r="9" class="dot good"><title>Mulberry Academy Woodside — 1.6 mi</title></circle><text x="334" y="51" class="dotn" text-anchor="middle">10</text><circle cx="510" cy="237" r="9" class="dot good"><title>Gladesmore Community School — 1.62 mi</title></circle><text x="510" y="241" class="dotn" text-anchor="middle">11</text><circle cx="294" cy="39" r="9" class="dot crit"><title>St Thomas More Catholic School — 1.67 mi</title></circle><text x="294" y="43" class="dotn" text-anchor="middle">12</text><circle cx="416" cy="417" r="9" class="dot crit"><title>Stoke Newington School and Sixth Form — 1.75 mi</title></circle><text x="416" y="421" class="dotn" text-anchor="middle">13</text><circle cx="331" cy="454" r="9" class="dot crit"><title>Highbury Fields School — 1.9 mi</title></circle><text x="331" y="458" class="dotn" text-anchor="middle">14</text><circle cx="540" cy="146" r="9" class="dot neut"><title>Harris Academy Tottenham — 2.01 mi</title></circle><text x="540" y="149" class="dotn" text-anchor="middle">15</text><circle cx="151" cy="59" r="9" class="dot crit"><title>Alexandra Park School — 2.07 mi</title></circle><text x="151" y="62" class="dotn" text-anchor="middle">16</text><circle cx="80" cy="134" r="9" class="dot crit"><title>Fortismere School — 2.21 mi</title></circle><text x="80" y="137" class="dotn" text-anchor="middle">17</text></svg>
+  <div class="maplegend">
+    <span class="chip good"><span class="dotmark"></span>Likely</span>
+    <span class="chip warn"><span class="dotmark"></span>Marginal</span>
+    <span class="chip crit"><span class="dotmark"></span>Unlikely</span>
+    <span class="chip neut"><span class="dotmark"></span>Criteria / no data</span>
+  </div></div>
+  <div class="tablewrap"><table><thead><tr><th></th><th>School</th><th>Borough</th><th class="num">Miles</th><th>Chance from N4&nbsp;1AZ</th><th class="num">P8 3-yr</th><th class="num">P8 pctile</th><th class="num">A8 ’24</th><th>Ofsted</th></tr></thead><tbody><tr><td class="tn">1</td><td class="tname"><a href="#s1">Hornsey School for Girls</a><span class=tnote>Girls only</span></td><td>Haringey</td><td class="num">0.5</td><td><span class="chip good"><span class="dotmark"></span>Likely</span></td><td class="num">+0.26</td><td class="num">71</td><td class="num">49.5</td><td>—</td></tr><tr><td class="tn">2</td><td class="tname"><a href="#s2">Skinners&#x27; Academy</a><span class=tnote>banded</span></td><td>Hackney</td><td class="num">0.66</td><td><span class="chip good"><span class="dotmark"></span>Likely</span></td><td class="num">-0.13</td><td class="num">40</td><td class="num">46.1</td><td>Good</td></tr><tr><td class="tn">3</td><td class="tname"><a href="#s3">Park View School</a></td><td>Haringey</td><td class="num">0.73</td><td><span class="chip good"><span class="dotmark"></span>Likely</span></td><td class="num">-0.08</td><td class="num">44</td><td class="num">38.7</td><td>Good</td></tr><tr><td class="tn">4</td><td class="tname"><a href="#s4">Greig City Academy</a><span class=tnote>CofE</span></td><td>Haringey</td><td class="num">0.78</td><td><span class="chip good"><span class="dotmark"></span>Likely</span></td><td class="num">+0.29</td><td class="num">73</td><td class="num">43.3</td><td>Good</td></tr><tr><td class="tn">5</td><td class="tname"><a href="#s5">Arts and Media School Islington</a></td><td>Islington</td><td class="num">1.05</td><td><span class="chip neut"><span class="dotmark"></span>No published data</span></td><td class="num">+0.02</td><td class="num">53</td><td class="num">45.0</td><td>Good</td></tr><tr><td class="tn">6</td><td class="tname"><a href="#s6">Highgate Wood Secondary School</a></td><td>Haringey</td><td class="num">1.27</td><td><span class="chip warn"><span class="dotmark"></span>Marginal</span></td><td class="num">+0.20</td><td class="num">67</td><td class="num">50.8</td><td>Expected standard (’25 card)</td></tr><tr><td class="tn">7</td><td class="tname"><a href="#s7">All Saints Catholic High School</a><span class=tnote>faith/criteria</span></td><td>Hackney</td><td class="num">1.29</td><td><span class="chip neut"><span class="dotmark"></span>Criteria-based</span></td><td class="num">+0.23</td><td class="num">69</td><td class="num">42.5</td><td>Good</td></tr><tr><td class="tn">8</td><td class="tname"><a href="#s8">Heartlands High School</a></td><td>Haringey</td><td class="num">1.38</td><td><span class="chip warn"><span class="dotmark"></span>Marginal</span></td><td class="num">+0.40</td><td class="num">80</td><td class="num">49.9</td><td>—</td></tr><tr><td class="tn">9</td><td class="tname"><a href="#s9">City of London Academy, Highgate Hill</a></td><td>Islington</td><td class="num">1.4</td><td><span class="chip neut"><span class="dotmark"></span>No published data</span></td><td class="num">-0.22</td><td class="num">32</td><td class="num">45.5</td><td>Good</td></tr><tr><td class="tn">10</td><td class="tname"><a href="#s10">Mulberry Academy Woodside</a></td><td>Haringey</td><td class="num">1.6</td><td><span class="chip good"><span class="dotmark"></span>Likely</span></td><td class="num">+0.00</td><td class="num">51</td><td class="num">45.8</td><td>Good</td></tr><tr><td class="tn">11</td><td class="tname"><a href="#s11">Gladesmore Community School</a></td><td>Haringey</td><td class="num">1.62</td><td><span class="chip good"><span class="dotmark"></span>Likely</span></td><td class="num">-0.10</td><td class="num">42</td><td class="num">46.5</td><td>—</td></tr><tr><td class="tn">12</td><td class="tname"><a href="#s12">St Thomas More Catholic School</a><span class=tnote>faith/criteria</span></td><td>Haringey</td><td class="num">1.67</td><td><span class="chip crit"><span class="dotmark"></span>Unlikely</span></td><td class="num">+0.49</td><td class="num">84</td><td class="num">50.0</td><td>Outstanding</td></tr><tr><td class="tn">13</td><td class="tname"><a href="#s13">Stoke Newington School and Sixth Form</a><span class=tnote>banded</span></td><td>Hackney</td><td class="num">1.75</td><td><span class="chip crit"><span class="dotmark"></span>Unlikely</span></td><td class="num">+0.01</td><td class="num">52</td><td class="num">52.2</td><td>—</td></tr><tr><td class="tn">14</td><td class="tname"><a href="#s14">Highbury Fields School</a><span class=tnote>Girls only</span></td><td>Islington</td><td class="num">1.9</td><td><span class="chip crit"><span class="dotmark"></span>Unlikely</span></td><td class="num">+0.62</td><td class="num">89</td><td class="num">51.4</td><td>—</td></tr><tr><td class="tn">15</td><td class="tname"><a href="#s15">Harris Academy Tottenham</a><span class=tnote>faith/criteria</span></td><td>Haringey</td><td class="num">2.01</td><td><span class="chip neut"><span class="dotmark"></span>Criteria-based</span></td><td class="num">+0.33</td><td class="num">76</td><td class="num">54.1</td><td>—</td></tr><tr><td class="tn">16</td><td class="tname"><a href="#s16">Alexandra Park School</a></td><td>Haringey</td><td class="num">2.07</td><td><span class="chip crit"><span class="dotmark"></span>Unlikely</span></td><td class="num">+0.73</td><td class="num">93</td><td class="num">61.3</td><td>Outstanding</td></tr><tr><td class="tn">17</td><td class="tname"><a href="#s17">Fortismere School</a></td><td>Haringey</td><td class="num">2.21</td><td><span class="chip crit"><span class="dotmark"></span>Unlikely</span></td><td class="num">+0.54</td><td class="num">86</td><td class="num">57.8</td><td>Good</td></tr></tbody></table></div>
+</section>
+
+<section>
+  <h2>Schools you can plan around</h2>
+  <p class="lede">From N4 1AZ these are close to safe: they either offered every applicant a place in recent years, or their cut-offs sit far beyond your distance.</p>
+  <article class="card" id="s1">
+  <header class="cardhead">
+    <div><span class="cardn">1</span><h3>Hornsey School for Girls</h3>
+    <div class="tags">0.5 mi · Haringey · Girls only</div></div>
+    <span class="chip good"><span class="dotmark"></span>Likely</span>
+  </header>
+  <p class="why">Offered every applicant a place on national offer day in each of the last five years. Girls only.</p>
+  <div class="charts">
+    <figure><figcaption>Distance cut-off on offer day, miles</figcaption><svg class="chart" viewBox="0 0 300 144" role="img" aria-label="Cut-off distance by year, miles"><line x1="30" y1="74.0" x2="294" y2="74.0" class="grid"/><text x="26" y="77.0" class="tick" text-anchor="end">0.3</text><line x1="30" y1="26.0" x2="294" y2="26.0" class="grid"/><text x="26" y="29.0" class="tick" text-anchor="end">0.6</text><line x1="30" y1="122" x2="294" y2="122" class="axis"/><text x="56.2" y="136" class="tick" text-anchor="middle">2022</text><text x="56.2" y="116.0" class="open" text-anchor="middle">all<title>2022: every applicant offered a place</title></text><text x="108.6" y="136" class="tick" text-anchor="middle">2023</text><text x="108.6" y="116.0" class="open" text-anchor="middle">all<title>2023: every applicant offered a place</title></text><text x="161.0" y="136" class="tick" text-anchor="middle">2024</text><text x="161.0" y="116.0" class="open" text-anchor="middle">all<title>2024: every applicant offered a place</title></text><text x="213.4" y="136" class="tick" text-anchor="middle">2025</text><text x="213.4" y="116.0" class="open" text-anchor="middle">all<title>2025: every applicant offered a place</title></text><text x="265.8" y="136" class="tick" text-anchor="middle">2026</text><text x="265.8" y="116.0" class="open" text-anchor="middle">all<title>2026: every applicant offered a place</title></text><line x1="30" y1="43.3" x2="294" y2="43.3" class="youline"/><line x1="198" y1="8" x2="216" y2="8" class="youline"/><text x="292" y="12" class="you" text-anchor="end">you · 0.5 mi</text></svg></figure>
+    <figure><figcaption>Progress 8 (whisker = 95% confidence)</figcaption><svg class="chart" viewBox="0 0 300 132" role="img" aria-label="Progress 8 by year"><line x1="30" y1="90.5" x2="294" y2="90.5" class="axis"/><text x="26" y="93.5" class="tick" text-anchor="end">0</text><text x="62.8" y="124" class="tick" text-anchor="middle">2022</text><rect x="49.8" y="79.6" width="26" height="10.9" rx="3" class="pos"><title>2022: Progress 8 +0.10</title></rect><text x="62.8" y="74.6" class="val" text-anchor="middle">+0.10</text><text x="128.2" y="124" class="tick" text-anchor="middle">2023</text><rect x="115.2" y="59.0" width="26" height="31.5" rx="3" class="pos"><title>2023: Progress 8 +0.29</title></rect><text x="128.2" y="54.0" class="val" text-anchor="middle">+0.29</text><text x="193.8" y="124" class="tick" text-anchor="middle">2024</text><rect x="180.8" y="49.2" width="26" height="41.2" rx="3" class="pos"><title>2024: Progress 8 +0.38</title></rect><line x1="193.8" y1="23.2" x2="193.8" y2="76.4" class="ci"/><line x1="188.8" y1="23.2" x2="198.8" y2="23.2" class="ci"/><line x1="188.8" y1="76.4" x2="198.8" y2="76.4" class="ci"/><text x="193.8" y="18.2" class="val" text-anchor="middle">+0.38</text><text x="259.2" y="124" class="tick tickb" text-anchor="middle">3-yr avg</text><rect x="246.2" y="62.3" width="26" height="28.2" rx="3" class="pos"><title>3-yr avg: Progress 8 +0.26</title></rect><text x="259.2" y="57.3" class="val" text-anchor="middle">+0.26</text></svg>
+    <div class="pctrow"><span class="pctlab">3-yr P8</span><span class="pcttrack"><span class="pctfill" style="width:71%"></span></span><span class="pctval">71th pctile</span></div></figure>
+  </div>
+  <div class="stats"><div class="stat"><div class="statv">49.5</div><div class="statl">Attainment 8</div></div><div class="stat"><div class="statv">49%</div><div class="statl">Grade 5+ Eng &amp; Maths</div></div><div class="stat"><div class="statv">9.9%</div><div class="statl">Absence</div><div class=statsub>nat. avg ≈ 7.8%</div></div><div class="stat"><div class="statv">—</div><div class="statl">Ofsted</div></div></div>
+</article><article class="card" id="s2">
+  <header class="cardhead">
+    <div><span class="cardn">2</span><h3>Skinners&#x27; Academy</h3>
+    <div class="tags">0.66 mi · Hackney · fair-banded · sixth form</div></div>
+    <span class="chip good"><span class="dotmark"></span>Likely</span>
+  </header>
+  <p class="why">At 0.66 mi you sat inside every 2025 and 2026 band cut-off. Fair-banded (applicants sit a banding test), and the tightest band in 2024 cut at 0.66 mi — so likely, not certain.</p>
+  <div class="charts">
+    <figure><figcaption>Distance cut-off on offer day, miles</figcaption><svg class="chart" viewBox="0 0 300 144" role="img" aria-label="Cut-off distance by year, miles"><line x1="30" y1="74.0" x2="294" y2="74.0" class="grid"/><text x="26" y="77.0" class="tick" text-anchor="end">4</text><line x1="30" y1="26.0" x2="294" y2="26.0" class="grid"/><text x="26" y="29.0" class="tick" text-anchor="end">8.1</text><line x1="30" y1="122" x2="294" y2="122" class="axis"/><text x="56.2" y="136" class="tick" text-anchor="middle">2022</text><rect x="43.2" y="106.4" width="26" height="8.7" rx="3" class="bar"><title>2022: band cut-offs 0.58–1.31 mi</title></rect><text x="56.2" y="102.4" class="val" text-anchor="middle">1.3</text><text x="108.6" y="136" class="tick" text-anchor="middle">2023</text><rect x="95.6" y="69.9" width="26" height="37.4" rx="3" class="bar"><title>2023: band cut-offs 1.24–4.38 mi</title></rect><text x="108.6" y="65.9" class="val" text-anchor="middle">4.4</text><text x="161.0" y="136" class="tick" text-anchor="middle">2024</text><rect x="148.0" y="64.9" width="26" height="49.2" rx="3" class="bar"><title>2024: band cut-offs 0.66–4.79 mi</title></rect><text x="161.0" y="60.9" class="val" text-anchor="middle">4.8</text><text x="213.4" y="136" class="tick" text-anchor="middle">2025</text><rect x="200.4" y="43.3" width="26" height="58.0" rx="3" class="bar"><title>2025: band cut-offs 1.74–6.61 mi</title></rect><text x="213.4" y="39.3" class="val" text-anchor="middle">6.6</text><text x="265.8" y="136" class="tick" text-anchor="middle">2026</text><rect x="252.8" y="99.7" width="26" height="5.0" rx="3" class="bar"><title>2026: band cut-offs 1.46–1.79 mi</title></rect><text x="265.8" y="95.7" class="val" text-anchor="middle">1.8</text><line x1="30" y1="114.1" x2="294" y2="114.1" class="youline"/><line x1="192" y1="8" x2="210" y2="8" class="youline"/><text x="292" y="12" class="you" text-anchor="end">you · 0.66 mi</text></svg><div class="appline">294 applications for 180 places (2026 entry)</div></figure>
+    <figure><figcaption>Progress 8 (whisker = 95% confidence)</figcaption><svg class="chart" viewBox="0 0 300 132" role="img" aria-label="Progress 8 by year"><line x1="30" y1="64.9" x2="294" y2="64.9" class="axis"/><text x="26" y="67.9" class="tick" text-anchor="end">0</text><text x="62.8" y="124" class="tick" text-anchor="middle">2022</text><rect x="49.8" y="64.9" width="26" height="36.5" rx="3" class="neg"><title>2022: Progress 8 -0.34</title></rect><text x="62.8" y="112.4" class="val" text-anchor="middle">-0.34</text><text x="128.2" y="124" class="tick" text-anchor="middle">2023</text><rect x="115.2" y="64.9" width="26" height="22.5" rx="3" class="neg"><title>2023: Progress 8 -0.21</title></rect><text x="128.2" y="98.5" class="val" text-anchor="middle">-0.21</text><text x="193.8" y="124" class="tick" text-anchor="middle">2024</text><rect x="180.8" y="47.7" width="26" height="17.2" rx="3" class="pos"><title>2024: Progress 8 +0.16</title></rect><line x1="193.8" y1="23.0" x2="193.8" y2="72.4" class="ci"/><line x1="188.8" y1="23.0" x2="198.8" y2="23.0" class="ci"/><line x1="188.8" y1="72.4" x2="198.8" y2="72.4" class="ci"/><text x="193.8" y="18.0" class="val" text-anchor="middle">+0.16</text><text x="259.2" y="124" class="tick tickb" text-anchor="middle">3-yr avg</text><rect x="246.2" y="64.9" width="26" height="14.0" rx="3" class="neg"><title>3-yr avg: Progress 8 -0.13</title></rect><text x="259.2" y="89.9" class="val" text-anchor="middle">-0.13</text></svg>
+    <div class="pctrow"><span class="pctlab">3-yr P8</span><span class="pcttrack"><span class="pctfill" style="width:40%"></span></span><span class="pctval">40th pctile</span></div></figure>
+  </div>
+  <div class="stats"><div class="stat"><div class="statv">46.1</div><div class="statl">Attainment 8</div></div><div class="stat"><div class="statv">43%</div><div class="statl">Grade 5+ Eng &amp; Maths</div></div><div class="stat"><div class="statv">9.8%</div><div class="statl">Absence</div><div class=statsub>nat. avg ≈ 7.8%</div></div><div class="stat"><div class="statv">Good</div><div class="statl">Ofsted</div><div class=statsub>legacy grade</div></div></div>
+</article><article class="card" id="s3">
+  <header class="cardhead">
+    <div><span class="cardn">3</span><h3>Park View School</h3>
+    <div class="tags">0.73 mi · Haringey</div></div>
+    <span class="chip good"><span class="dotmark"></span>Likely</span>
+  </header>
+  <p class="why">Offered every applicant a place in each of the last five years.</p>
+  <div class="charts">
+    <figure><figcaption>Distance cut-off on offer day, miles</figcaption><svg class="chart" viewBox="0 0 300 144" role="img" aria-label="Cut-off distance by year, miles"><line x1="30" y1="74.0" x2="294" y2="74.0" class="grid"/><text x="26" y="77.0" class="tick" text-anchor="end">0.4</text><line x1="30" y1="26.0" x2="294" y2="26.0" class="grid"/><text x="26" y="29.0" class="tick" text-anchor="end">0.9</text><line x1="30" y1="122" x2="294" y2="122" class="axis"/><text x="56.2" y="136" class="tick" text-anchor="middle">2022</text><text x="56.2" y="116.0" class="open" text-anchor="middle">all<title>2022: every applicant offered a place</title></text><text x="108.6" y="136" class="tick" text-anchor="middle">2023</text><text x="108.6" y="116.0" class="open" text-anchor="middle">all<title>2023: every applicant offered a place</title></text><text x="161.0" y="136" class="tick" text-anchor="middle">2024</text><text x="161.0" y="116.0" class="open" text-anchor="middle">all<title>2024: every applicant offered a place</title></text><text x="213.4" y="136" class="tick" text-anchor="middle">2025</text><text x="213.4" y="116.0" class="open" text-anchor="middle">all<title>2025: every applicant offered a place</title></text><text x="265.8" y="136" class="tick" text-anchor="middle">2026</text><text x="265.8" y="116.0" class="open" text-anchor="middle">all<title>2026: every applicant offered a place</title></text><line x1="30" y1="43.3" x2="294" y2="43.3" class="youline"/><line x1="192" y1="8" x2="210" y2="8" class="youline"/><text x="292" y="12" class="you" text-anchor="end">you · 0.73 mi</text></svg></figure>
+    <figure><figcaption>Progress 8 (whisker = 95% confidence)</figcaption><svg class="chart" viewBox="0 0 300 132" role="img" aria-label="Progress 8 by year"><line x1="30" y1="65.6" x2="294" y2="65.6" class="axis"/><text x="26" y="68.6" class="tick" text-anchor="end">0</text><text x="62.8" y="124" class="tick" text-anchor="middle">2022</text><rect x="49.8" y="65.6" width="26" height="26.3" rx="3" class="neg"><title>2022: Progress 8 -0.16</title></rect><text x="62.8" y="102.9" class="val" text-anchor="middle">-0.16</text><text x="128.2" y="124" class="tick" text-anchor="middle">2023</text><rect x="115.2" y="65.6" width="26" height="14.8" rx="3" class="neg"><title>2023: Progress 8 -0.09</title></rect><text x="128.2" y="91.4" class="val" text-anchor="middle">-0.09</text><text x="193.8" y="124" class="tick" text-anchor="middle">2024</text><rect x="180.8" y="63.9" width="26" height="2.0" rx="3" class="pos"><title>2024: Progress 8 +0.01</title></rect><line x1="193.8" y1="31.0" x2="193.8" y2="96.8" class="ci"/><line x1="188.8" y1="31.0" x2="198.8" y2="31.0" class="ci"/><line x1="188.8" y1="96.8" x2="198.8" y2="96.8" class="ci"/><text x="193.8" y="26.0" class="val" text-anchor="middle">+0.01</text><text x="259.2" y="124" class="tick tickb" text-anchor="middle">3-yr avg</text><rect x="246.2" y="65.6" width="26" height="13.2" rx="3" class="neg"><title>3-yr avg: Progress 8 -0.08</title></rect><text x="259.2" y="89.7" class="val" text-anchor="middle">-0.08</text></svg>
+    <div class="pctrow"><span class="pctlab">3-yr P8</span><span class="pcttrack"><span class="pctfill" style="width:44%"></span></span><span class="pctval">44th pctile</span></div></figure>
+  </div>
+  <div class="stats"><div class="stat"><div class="statv">38.7</div><div class="statl">Attainment 8</div></div><div class="stat"><div class="statv">30%</div><div class="statl">Grade 5+ Eng &amp; Maths</div></div><div class="stat"><div class="statv">6.1%</div><div class="statl">Absence</div><div class=statsub>nat. avg ≈ 7.8%</div></div><div class="stat"><div class="statv">Good</div><div class="statl">Ofsted</div><div class=statsub>legacy grade</div></div></div>
+</article><article class="card" id="s4">
+  <header class="cardhead">
+    <div><span class="cardn">4</span><h3>Greig City Academy</h3>
+    <div class="tags">0.78 mi · Haringey · Church of England · sixth form</div></div>
+    <span class="chip good"><span class="dotmark"></span>Likely</span>
+  </header>
+  <p class="why">Where a distance cut-off applied it ran 2.0–2.9 mi; you are 0.78 mi away. The cut-off is tightening year on year but you have a large buffer.</p>
+  <div class="charts">
+    <figure><figcaption>Distance cut-off on offer day, miles</figcaption><svg class="chart" viewBox="0 0 300 144" role="img" aria-label="Cut-off distance by year, miles"><line x1="30" y1="74.0" x2="294" y2="74.0" class="grid"/><text x="26" y="77.0" class="tick" text-anchor="end">1.8</text><line x1="30" y1="26.0" x2="294" y2="26.0" class="grid"/><text x="26" y="29.0" class="tick" text-anchor="end">3.6</text><line x1="30" y1="122" x2="294" y2="122" class="axis"/><text x="56.2" y="136" class="tick" text-anchor="middle">2022</text><text x="56.2" y="116.0" class="open" text-anchor="middle">all<title>2022: every applicant offered a place</title></text><text x="108.6" y="136" class="tick" text-anchor="middle">2023</text><text x="108.6" y="116.0" class="open" text-anchor="middle">all<title>2023: every applicant offered a place</title></text><text x="161.0" y="136" class="tick" text-anchor="middle">2024</text><rect x="148.0" y="43.3" width="26" height="78.7" rx="3" class="bar"><title>2024: cut-off 2.93 mi</title></rect><text x="161.0" y="39.3" class="val" text-anchor="middle">2.93</text><text x="213.4" y="136" class="tick" text-anchor="middle">2025</text><rect x="200.4" y="53.3" width="26" height="68.7" rx="3" class="bar"><title>2025: cut-off 2.56 mi</title></rect><text x="213.4" y="49.3" class="val" text-anchor="middle">2.56</text><text x="265.8" y="136" class="tick" text-anchor="middle">2026</text><rect x="252.8" y="69.3" width="26" height="52.7" rx="3" class="bar"><title>2026: cut-off 1.96 mi</title></rect><text x="265.8" y="65.3" class="val" text-anchor="middle">1.96</text><line x1="30" y1="101.1" x2="294" y2="101.1" class="youline"/><line x1="192" y1="8" x2="210" y2="8" class="youline"/><text x="292" y="12" class="you" text-anchor="end">you · 0.78 mi</text></svg></figure>
+    <figure><figcaption>Progress 8 (whisker = 95% confidence)</figcaption><svg class="chart" viewBox="0 0 300 132" role="img" aria-label="Progress 8 by year"><line x1="30" y1="92.2" x2="294" y2="92.2" class="axis"/><text x="26" y="95.2" class="tick" text-anchor="end">0</text><text x="62.8" y="124" class="tick" text-anchor="middle">2022</text><rect x="49.8" y="78.3" width="26" height="13.9" rx="3" class="pos"><title>2022: Progress 8 +0.14</title></rect><text x="62.8" y="73.3" class="val" text-anchor="middle">+0.14</text><text x="128.2" y="124" class="tick" text-anchor="middle">2023</text><rect x="115.2" y="65.4" width="26" height="26.7" rx="3" class="pos"><title>2023: Progress 8 +0.27</title></rect><text x="128.2" y="60.4" class="val" text-anchor="middle">+0.27</text><text x="193.8" y="124" class="tick" text-anchor="middle">2024</text><rect x="180.8" y="45.6" width="26" height="46.5" rx="3" class="pos"><title>2024: Progress 8 +0.47</title></rect><line x1="193.8" y1="21.9" x2="193.8" y2="69.4" class="ci"/><line x1="188.8" y1="21.9" x2="198.8" y2="21.9" class="ci"/><line x1="188.8" y1="69.4" x2="198.8" y2="69.4" class="ci"/><text x="193.8" y="16.9" class="val" text-anchor="middle">+0.47</text><text x="259.2" y="124" class="tick tickb" text-anchor="middle">3-yr avg</text><rect x="246.2" y="63.5" width="26" height="28.7" rx="3" class="pos"><title>3-yr avg: Progress 8 +0.29</title></rect><text x="259.2" y="58.5" class="val" text-anchor="middle">+0.29</text></svg>
+    <div class="pctrow"><span class="pctlab">3-yr P8</span><span class="pcttrack"><span class="pctfill" style="width:73%"></span></span><span class="pctval">73th pctile</span></div></figure>
+  </div>
+  <div class="stats"><div class="stat"><div class="statv">43.3</div><div class="statl">Attainment 8</div></div><div class="stat"><div class="statv">38%</div><div class="statl">Grade 5+ Eng &amp; Maths</div></div><div class="stat"><div class="statv">9.5%</div><div class="statl">Absence</div><div class=statsub>nat. avg ≈ 7.8%</div></div><div class="stat"><div class="statv">Good</div><div class="statl">Ofsted</div><div class=statsub>legacy grade</div></div></div>
+</article><article class="card" id="s10">
+  <header class="cardhead">
+    <div><span class="cardn">10</span><h3>Mulberry Academy Woodside</h3>
+    <div class="tags">1.6 mi · Haringey</div></div>
+    <span class="chip good"><span class="dotmark"></span>Likely</span>
+  </header>
+  <p class="why">Offered every applicant a place in each of the last three years.</p>
+  <div class="charts">
+    <figure><figcaption>Distance cut-off on offer day, miles</figcaption><svg class="chart" viewBox="0 0 300 144" role="img" aria-label="Cut-off distance by year, miles"><line x1="30" y1="74.0" x2="294" y2="74.0" class="grid"/><text x="26" y="77.0" class="tick" text-anchor="end">1</text><line x1="30" y1="26.0" x2="294" y2="26.0" class="grid"/><text x="26" y="29.0" class="tick" text-anchor="end">2</text><line x1="30" y1="122" x2="294" y2="122" class="axis"/><text x="56.2" y="136" class="tick" text-anchor="middle">2022</text><rect x="43.2" y="72.9" width="26" height="49.1" rx="3" class="bar"><title>2022: cut-off 1.03 mi</title></rect><text x="56.2" y="68.9" class="val" text-anchor="middle">1.03</text><text x="108.6" y="136" class="tick" text-anchor="middle">2023</text><rect x="95.6" y="43.3" width="26" height="78.7" rx="3" class="bar"><title>2023: cut-off 1.64 mi</title></rect><text x="108.6" y="39.3" class="val" text-anchor="middle">1.64</text><text x="161.0" y="136" class="tick" text-anchor="middle">2024</text><text x="161.0" y="116.0" class="open" text-anchor="middle">all<title>2024: every applicant offered a place</title></text><text x="213.4" y="136" class="tick" text-anchor="middle">2025</text><text x="213.4" y="116.0" class="open" text-anchor="middle">all<title>2025: every applicant offered a place</title></text><text x="265.8" y="136" class="tick" text-anchor="middle">2026</text><text x="265.8" y="116.0" class="open" text-anchor="middle">all<title>2026: every applicant offered a place</title></text><line x1="30" y1="45.5" x2="294" y2="45.5" class="youline"/><line x1="198" y1="8" x2="216" y2="8" class="youline"/><text x="292" y="12" class="you" text-anchor="end">you · 1.6 mi</text></svg></figure>
+    <figure><figcaption>Progress 8 (whisker = 95% confidence)</figcaption><svg class="chart" viewBox="0 0 300 132" role="img" aria-label="Progress 8 by year"><line x1="30" y1="83.0" x2="294" y2="83.0" class="axis"/><text x="26" y="86.0" class="tick" text-anchor="end">0</text><text x="62.8" y="124" class="tick" text-anchor="middle">2022</text><rect x="49.8" y="83.0" width="26" height="12.0" rx="3" class="neg"><title>2022: Progress 8 -0.08</title></rect><text x="62.8" y="106.0" class="val" text-anchor="middle">-0.08</text><text x="128.2" y="124" class="tick" text-anchor="middle">2023</text><rect x="115.2" y="83.0" width="26" height="13.5" rx="3" class="neg"><title>2023: Progress 8 -0.09</title></rect><text x="128.2" y="107.5" class="val" text-anchor="middle">-0.09</text><text x="193.8" y="124" class="tick" text-anchor="middle">2024</text><rect x="180.8" y="57.5" width="26" height="25.5" rx="3" class="pos"><title>2024: Progress 8 +0.17</title></rect><line x1="193.8" y1="29.0" x2="193.8" y2="86.0" class="ci"/><line x1="188.8" y1="29.0" x2="198.8" y2="29.0" class="ci"/><line x1="188.8" y1="86.0" x2="198.8" y2="86.0" class="ci"/><text x="193.8" y="24.0" class="val" text-anchor="middle">+0.17</text><text x="259.2" y="124" class="tick tickb" text-anchor="middle">3-yr avg</text><rect x="246.2" y="83.0" width="26" height="2.0" rx="3" class="pos"><title>3-yr avg: Progress 8 +0.00</title></rect><text x="259.2" y="78.0" class="val" text-anchor="middle">+0.00</text></svg>
+    <div class="pctrow"><span class="pctlab">3-yr P8</span><span class="pcttrack"><span class="pctfill" style="width:51%"></span></span><span class="pctval">51th pctile</span></div></figure>
+  </div>
+  <div class="stats"><div class="stat"><div class="statv">45.8</div><div class="statl">Attainment 8</div></div><div class="stat"><div class="statv">40%</div><div class="statl">Grade 5+ Eng &amp; Maths</div></div><div class="stat"><div class="statv">6.5%</div><div class="statl">Absence</div><div class=statsub>nat. avg ≈ 7.8%</div></div><div class="stat"><div class="statv">Good</div><div class="statl">Ofsted</div><div class=statsub>legacy grade</div></div></div>
+</article><article class="card" id="s11">
+  <header class="cardhead">
+    <div><span class="cardn">11</span><h3>Gladesmore Community School</h3>
+    <div class="tags">1.62 mi · Haringey</div></div>
+    <span class="chip good"><span class="dotmark"></span>Likely</span>
+  </header>
+  <p class="why">Offered all applicants in 2026 and cut at 5.2 mi in 2025 — comfortably past your 1.62 mi. Earlier years were tighter, so keep an eye on the trend.</p>
+  <div class="charts">
+    <figure><figcaption>Distance cut-off on offer day, miles</figcaption><svg class="chart" viewBox="0 0 300 144" role="img" aria-label="Cut-off distance by year, miles"><line x1="30" y1="74.0" x2="294" y2="74.0" class="grid"/><text x="26" y="77.0" class="tick" text-anchor="end">3.2</text><line x1="30" y1="26.0" x2="294" y2="26.0" class="grid"/><text x="26" y="29.0" class="tick" text-anchor="end">6.4</text><line x1="30" y1="122" x2="294" y2="122" class="axis"/><text x="56.2" y="136" class="tick" text-anchor="middle">2022</text><rect x="43.2" y="108.4" width="26" height="13.6" rx="3" class="bar"><title>2022: cut-off 0.9 mi</title></rect><text x="56.2" y="104.4" class="val" text-anchor="middle">0.9</text><text x="108.6" y="136" class="tick" text-anchor="middle">2023</text><rect x="95.6" y="109.3" width="26" height="12.7" rx="3" class="bar"><title>2023: cut-off 0.85 mi</title></rect><text x="108.6" y="105.3" class="val" text-anchor="middle">0.85</text><text x="161.0" y="136" class="tick" text-anchor="middle">2024</text><rect x="148.0" y="103.2" width="26" height="18.8" rx="3" class="bar"><title>2024: cut-off 1.26 mi</title></rect><text x="161.0" y="99.2" class="val" text-anchor="middle">1.26</text><text x="213.4" y="136" class="tick" text-anchor="middle">2025</text><rect x="200.4" y="43.3" width="26" height="78.7" rx="3" class="bar"><title>2025: cut-off 5.25 mi</title></rect><text x="213.4" y="39.3" class="val" text-anchor="middle">5.25</text><text x="265.8" y="136" class="tick" text-anchor="middle">2026</text><text x="265.8" y="116.0" class="open" text-anchor="middle">all<title>2026: every applicant offered a place</title></text><line x1="30" y1="97.8" x2="294" y2="97.8" class="youline"/><line x1="192" y1="8" x2="210" y2="8" class="youline"/><text x="292" y="12" class="you" text-anchor="end">you · 1.62 mi</text></svg></figure>
+    <figure><figcaption>Progress 8 (whisker = 95% confidence)</figcaption><svg class="chart" viewBox="0 0 300 132" role="img" aria-label="Progress 8 by year"><line x1="30" y1="52.1" x2="294" y2="52.1" class="axis"/><text x="26" y="55.1" class="tick" text-anchor="end">0</text><text x="62.8" y="124" class="tick" text-anchor="middle">2022</text><rect x="49.8" y="50.6" width="26" height="2.0" rx="3" class="pos"><title>2022: Progress 8 +0.01</title></rect><text x="62.8" y="45.6" class="val" text-anchor="middle">+0.01</text><text x="128.2" y="124" class="tick" text-anchor="middle">2023</text><rect x="115.2" y="52.1" width="26" height="45.7" rx="3" class="neg"><title>2023: Progress 8 -0.30</title></rect><text x="128.2" y="108.8" class="val" text-anchor="middle">-0.30</text><text x="193.8" y="124" class="tick" text-anchor="middle">2024</text><rect x="180.8" y="52.1" width="26" height="3.0" rx="3" class="neg"><title>2024: Progress 8 -0.02</title></rect><line x1="193.8" y1="29.3" x2="193.8" y2="82.6" class="ci"/><line x1="188.8" y1="29.3" x2="198.8" y2="29.3" class="ci"/><line x1="188.8" y1="82.6" x2="198.8" y2="82.6" class="ci"/><text x="193.8" y="93.6" class="val" text-anchor="middle">-0.02</text><text x="259.2" y="124" class="tick tickb" text-anchor="middle">3-yr avg</text><rect x="246.2" y="52.1" width="26" height="15.2" rx="3" class="neg"><title>3-yr avg: Progress 8 -0.10</title></rect><text x="259.2" y="78.4" class="val" text-anchor="middle">-0.10</text></svg>
+    <div class="pctrow"><span class="pctlab">3-yr P8</span><span class="pcttrack"><span class="pctfill" style="width:42%"></span></span><span class="pctval">42th pctile</span></div></figure>
+  </div>
+  <div class="stats"><div class="stat"><div class="statv">46.5</div><div class="statl">Attainment 8</div></div><div class="stat"><div class="statv">45%</div><div class="statl">Grade 5+ Eng &amp; Maths</div></div><div class="stat"><div class="statv">9.8%</div><div class="statl">Absence</div><div class=statsub>nat. avg ≈ 7.8%</div></div><div class="stat"><div class="statv">—</div><div class="statl">Ofsted</div></div></div>
+</article>
+</section>
+
+<section>
+  <h2>Worth a preference, not a plan</h2>
+  <p class="lede">You sit just outside these schools' recent cut-offs. Put them high on the form if you like them — a preference costs nothing and never hurts your chances elsewhere — but don't build your plan on an offer.</p>
+  <article class="card" id="s6">
+  <header class="cardhead">
+    <div><span class="cardn">6</span><h3>Highgate Wood Secondary School</h3>
+    <div class="tags">1.27 mi · Haringey · sixth form</div></div>
+    <span class="chip warn"><span class="dotmark"></span>Marginal</span>
+  </header>
+  <p class="why">You are 1.27 mi away and the 2026 cut-off was 1.17 mi — just short. The cut-off has widened every year since 2023, so this is a genuine maybe: worth a high preference, not a plan.</p>
+  <div class="charts">
+    <figure><figcaption>Distance cut-off on offer day, miles</figcaption><svg class="chart" viewBox="0 0 300 144" role="img" aria-label="Cut-off distance by year, miles"><line x1="30" y1="74.0" x2="294" y2="74.0" class="grid"/><text x="26" y="77.0" class="tick" text-anchor="end">0.8</text><line x1="30" y1="26.0" x2="294" y2="26.0" class="grid"/><text x="26" y="29.0" class="tick" text-anchor="end">1.5</text><line x1="30" y1="122" x2="294" y2="122" class="axis"/><text x="56.2" y="136" class="tick" text-anchor="middle">2022</text><rect x="43.2" y="74.3" width="26" height="47.7" rx="3" class="bar"><title>2022: cut-off 0.77 mi</title></rect><text x="56.2" y="70.3" class="val" text-anchor="middle">0.77</text><text x="108.6" y="136" class="tick" text-anchor="middle">2023</text><rect x="95.6" y="75.1" width="26" height="46.9" rx="3" class="bar"><title>2023: cut-off 0.76 mi</title></rect><text x="108.6" y="71.1" class="val" text-anchor="middle">0.76</text><text x="161.0" y="136" class="tick" text-anchor="middle">2024</text><rect x="148.0" y="62.2" width="26" height="59.8" rx="3" class="bar"><title>2024: cut-off 0.96 mi</title></rect><text x="161.0" y="58.2" class="val" text-anchor="middle">0.96</text><text x="213.4" y="136" class="tick" text-anchor="middle">2025</text><rect x="200.4" y="58.5" width="26" height="63.5" rx="3" class="bar"><title>2025: cut-off 1.02 mi</title></rect><text x="213.4" y="54.5" class="val" text-anchor="middle">1.02</text><text x="265.8" y="136" class="tick" text-anchor="middle">2026</text><rect x="252.8" y="49.6" width="26" height="72.4" rx="3" class="bar"><title>2026: cut-off 1.17 mi</title></rect><text x="265.8" y="45.6" class="val" text-anchor="middle">1.17</text><line x1="30" y1="43.3" x2="294" y2="43.3" class="youline"/><line x1="192" y1="8" x2="210" y2="8" class="youline"/><text x="292" y="12" class="you" text-anchor="end">you · 1.27 mi</text></svg></figure>
+    <figure><figcaption>Progress 8 (whisker = 95% confidence)</figcaption><svg class="chart" viewBox="0 0 300 132" role="img" aria-label="Progress 8 by year"><line x1="30" y1="85.8" x2="294" y2="85.8" class="axis"/><text x="26" y="88.8" class="tick" text-anchor="end">0</text><text x="62.8" y="124" class="tick" text-anchor="middle">2022</text><rect x="49.8" y="60.3" width="26" height="25.5" rx="3" class="pos"><title>2022: Progress 8 +0.19</title></rect><text x="62.8" y="55.3" class="val" text-anchor="middle">+0.19</text><text x="128.2" y="124" class="tick" text-anchor="middle">2023</text><rect x="115.2" y="65.7" width="26" height="20.1" rx="3" class="pos"><title>2023: Progress 8 +0.15</title></rect><text x="128.2" y="60.7" class="val" text-anchor="middle">+0.15</text><text x="193.8" y="124" class="tick" text-anchor="middle">2024</text><rect x="180.8" y="50.9" width="26" height="34.9" rx="3" class="pos"><title>2024: Progress 8 +0.26</title></rect><line x1="193.8" y1="26.8" x2="193.8" y2="75.1" class="ci"/><line x1="188.8" y1="26.8" x2="198.8" y2="26.8" class="ci"/><line x1="188.8" y1="75.1" x2="198.8" y2="75.1" class="ci"/><text x="193.8" y="21.8" class="val" text-anchor="middle">+0.26</text><text x="259.2" y="124" class="tick tickb" text-anchor="middle">3-yr avg</text><rect x="246.2" y="59.0" width="26" height="26.8" rx="3" class="pos"><title>3-yr avg: Progress 8 +0.20</title></rect><text x="259.2" y="54.0" class="val" text-anchor="middle">+0.20</text></svg>
+    <div class="pctrow"><span class="pctlab">3-yr P8</span><span class="pcttrack"><span class="pctfill" style="width:67%"></span></span><span class="pctval">67th pctile</span></div></figure>
+  </div>
+  <div class="stats"><div class="stat"><div class="statv">50.8</div><div class="statl">Attainment 8</div></div><div class="stat"><div class="statv">51%</div><div class="statl">Grade 5+ Eng &amp; Maths</div></div><div class="stat"><div class="statv">6.9%</div><div class="statl">Absence</div><div class=statsub>nat. avg ≈ 7.8%</div></div><div class="stat"><div class="statv">Expected standard</div><div class="statl">Ofsted</div><div class=statsub>2025 report card</div></div></div>
+</article><article class="card" id="s8">
+  <header class="cardhead">
+    <div><span class="cardn">8</span><h3>Heartlands High School</h3>
+    <div class="tags">1.38 mi · Haringey</div></div>
+    <span class="chip warn"><span class="dotmark"></span>Marginal</span>
+  </header>
+  <p class="why">You are 1.38 mi away. The cut-off reached you in only one of the last five years (2024: 1.51 mi); in 2026 it was 1.19 mi. Possible in a quiet year — treat as aspirational.</p>
+  <div class="charts">
+    <figure><figcaption>Distance cut-off on offer day, miles</figcaption><svg class="chart" viewBox="0 0 300 144" role="img" aria-label="Cut-off distance by year, miles"><line x1="30" y1="74.0" x2="294" y2="74.0" class="grid"/><text x="26" y="77.0" class="tick" text-anchor="end">0.9</text><line x1="30" y1="26.0" x2="294" y2="26.0" class="grid"/><text x="26" y="29.0" class="tick" text-anchor="end">1.8</text><line x1="30" y1="122" x2="294" y2="122" class="axis"/><text x="56.2" y="136" class="tick" text-anchor="middle">2022</text><rect x="43.2" y="67.0" width="26" height="55.0" rx="3" class="bar"><title>2022: cut-off 1.05 mi</title></rect><text x="56.2" y="63.0" class="val" text-anchor="middle">1.05</text><text x="108.6" y="136" class="tick" text-anchor="middle">2023</text><rect x="95.6" y="70.7" width="26" height="51.3" rx="3" class="bar"><title>2023: cut-off 0.98 mi</title></rect><text x="108.6" y="66.7" class="val" text-anchor="middle">0.98</text><text x="161.0" y="136" class="tick" text-anchor="middle">2024</text><rect x="148.0" y="43.3" width="26" height="78.7" rx="3" class="bar"><title>2024: cut-off 1.51 mi</title></rect><text x="161.0" y="39.3" class="val" text-anchor="middle">1.51</text><text x="213.4" y="136" class="tick" text-anchor="middle">2025</text><rect x="200.4" y="68.2" width="26" height="53.8" rx="3" class="bar"><title>2025: cut-off 1.03 mi</title></rect><text x="213.4" y="64.2" class="val" text-anchor="middle">1.03</text><text x="265.8" y="136" class="tick" text-anchor="middle">2026</text><rect x="252.8" y="59.8" width="26" height="62.2" rx="3" class="bar"><title>2026: cut-off 1.19 mi</title></rect><text x="265.8" y="55.8" class="val" text-anchor="middle">1.19</text><line x1="30" y1="49.9" x2="294" y2="49.9" class="youline"/><line x1="192" y1="8" x2="210" y2="8" class="youline"/><text x="292" y="12" class="you" text-anchor="end">you · 1.38 mi</text></svg></figure>
+    <figure><figcaption>Progress 8 (whisker = 95% confidence)</figcaption><svg class="chart" viewBox="0 0 300 132" role="img" aria-label="Progress 8 by year"><line x1="30" y1="89.1" x2="294" y2="89.1" class="axis"/><text x="26" y="92.1" class="tick" text-anchor="end">0</text><text x="62.8" y="124" class="tick" text-anchor="middle">2022</text><rect x="49.8" y="42.8" width="26" height="46.4" rx="3" class="pos"><title>2022: Progress 8 +0.40</title></rect><text x="62.8" y="37.8" class="val" text-anchor="middle">+0.40</text><text x="128.2" y="124" class="tick" text-anchor="middle">2023</text><rect x="115.2" y="40.5" width="26" height="48.7" rx="3" class="pos"><title>2023: Progress 8 +0.42</title></rect><text x="128.2" y="35.5" class="val" text-anchor="middle">+0.42</text><text x="193.8" y="124" class="tick" text-anchor="middle">2024</text><rect x="180.8" y="46.2" width="26" height="42.9" rx="3" class="pos"><title>2024: Progress 8 +0.37</title></rect><line x1="193.8" y1="24.2" x2="193.8" y2="67.1" class="ci"/><line x1="188.8" y1="24.2" x2="198.8" y2="24.2" class="ci"/><line x1="188.8" y1="67.1" x2="198.8" y2="67.1" class="ci"/><text x="193.8" y="19.2" class="val" text-anchor="middle">+0.37</text><text x="259.2" y="124" class="tick tickb" text-anchor="middle">3-yr avg</text><rect x="246.2" y="42.8" width="26" height="46.4" rx="3" class="pos"><title>3-yr avg: Progress 8 +0.40</title></rect><text x="259.2" y="37.8" class="val" text-anchor="middle">+0.40</text></svg>
+    <div class="pctrow"><span class="pctlab">3-yr P8</span><span class="pcttrack"><span class="pctfill" style="width:80%"></span></span><span class="pctval">80th pctile</span></div></figure>
+  </div>
+  <div class="stats"><div class="stat"><div class="statv">49.9</div><div class="statl">Attainment 8</div></div><div class="stat"><div class="statv">52%</div><div class="statl">Grade 5+ Eng &amp; Maths</div></div><div class="stat"><div class="statv">10.7%</div><div class="statl">Absence</div><div class=statsub>nat. avg ≈ 7.8%</div></div><div class="stat"><div class="statv">—</div><div class="statl">Ofsted</div></div></div>
+</article>
+</section>
+
+<section>
+  <h2>Out of realistic reach from this postcode</h2>
+  <p class="lede">Popular schools whose cut-offs have sat well inside your distance for years. Listing every one of your six preferences here is the classic mistake: you would likely receive none of them, and be allocated whichever school still has places.</p>
+  <div class="crows"><div class="crow"><span class="cardn">12</span><div class="crmain"><strong>St Thomas More Catholic School</strong><span class="crsub">Catholic criteria first, and the 2026 distance cut-off was 0.22 mi against your 1.67 mi. Out of reach unless you qualify high under the faith criteria — and tight even then.</span></div><div class="crnum">you 1.67 mi<br><span class="crcut">cut-off 0.22 mi</span></div><div class="crnum">P8 +0.49<br><span class="crcut">84th pctile</span></div></div><div class="crow"><span class="cardn">13</span><div class="crmain"><strong>Stoke Newington School and Sixth Form</strong><span class="crsub">Roughly three applicants per place. 2026 band cut-offs ran 0.75–0.88 mi; you are 1.75 mi away — around twice the cut-off in most bands and years.</span></div><div class="crnum">you 1.75 mi<br><span class="crcut">cut-off 0.5–1.77 mi</span></div><div class="crnum">P8 +0.01<br><span class="crcut">52th pctile</span></div></div><div class="crow"><span class="cardn">14</span><div class="crmain"><strong>Highbury Fields School</strong><span class="crsub">Girls only. Cut-offs have sat between 0.79 and 0.97 mi for three years; you are 1.90 mi away.</span></div><div class="crnum">you 1.9 mi<br><span class="crcut">cut-off 0.79–0.97 mi</span></div><div class="crnum">P8 +0.62<br><span class="crcut">89th pctile</span></div></div><div class="crow"><span class="cardn">16</span><div class="crmain"><strong>Alexandra Park School</strong><span class="crsub">The cut-off has been pinned near 0.5 mi for five straight years; you are 2.07 mi away. From this postcode it is effectively closed.</span></div><div class="crnum">you 2.07 mi<br><span class="crcut">cut-off 0.46–0.53 mi</span></div><div class="crnum">P8 +0.73<br><span class="crcut">93th pctile</span></div></div><div class="crow"><span class="cardn">17</span><div class="crmain"><strong>Fortismere School</strong><span class="crsub">The cut-off has widened to 1.23 mi but you are 2.21 mi away — still a mile short even in the loosest year.</span></div><div class="crnum">you 2.21 mi<br><span class="crcut">cut-off 0.48–1.23 mi</span></div><div class="crnum">P8 +0.54<br><span class="crcut">86th pctile</span></div></div></div>
+</section>
+
+<section>
+  <h2>Different rules apply</h2>
+  <div class="crows"><div class="crow"><span class="cardn">5</span><div class="crmain"><strong>Arts and Media School Islington</strong><span class="crsub">Islington publishes cut-offs only for schools that fill on distance; this school has none listed, which usually means all applicants were offered a place. Verify with the school before relying on it.</span></div><div class="crnum">you 1.05 mi<br><span class="crcut">no distance offers</span></div><div class="crnum">P8 +0.02<br><span class="crcut">53th pctile</span></div></div><div class="crow"><span class="cardn">7</span><div class="crmain"><strong>All Saints Catholic High School</strong><span class="crsub">Catholic oversubscription criteria come before distance. As Our Lady's High School (2024) it had 202 applications for 120 places but still made non-preference offers. A realistic option for practising Catholic families; ask the school for current pressure.</span></div><div class="crnum">you 1.29 mi<br><span class="crcut">no distance offers</span></div><div class="crnum">P8 +0.23<br><span class="crcut">69th pctile</span></div></div><div class="crow"><span class="cardn">9</span><div class="crmain"><strong>City of London Academy, Highgate Hill</strong><span class="crsub">No cut-off in Islington's published list — the school has not filled on distance in the years published. Verify with the school.</span></div><div class="crnum">you 1.4 mi<br><span class="crcut">no distance offers</span></div><div class="crnum">P8 -0.22<br><span class="crcut">32th pctile</span></div></div><div class="crow"><span class="cardn">15</span><div class="crmain"><strong>Harris Academy Tottenham</strong><span class="crsub">Admits by fair banding with random allocation inside each band, so distance from N4 1AZ neither helps nor rules you out. Strong recent results make it a rational lottery ticket with one preference.</span></div><div class="crnum">you 2.01 mi<br><span class="crcut">no distance offers</span></div><div class="crnum">P8 +0.33<br><span class="crcut">76th pctile</span></div></div></div>
+</section>
+
+<section>
+  <h2>Using your six preferences</h2>
+  <p class="lede">You apply once, through your home borough (Haringey eAdmissions), ranking up to six schools across any London borough. Schools never see your ranking; you receive exactly one offer — the highest-ranked school that can take you. The playbook from N4&nbsp;1AZ:</p>
+  <ol class="playbook">
+    <li><strong>Spend the top of the form on genuine wants, even long shots.</strong> One or two preferences on Heartlands, Highgate Wood or a Harris Tottenham band-lottery are free upside.</li>
+    <li><strong>Fill the middle with likely schools you'd be happy with</strong> — Greig City, Skinners', Hornsey (for a daughter) — in your true order of preference.</li>
+    <li><strong>Always end with a banker.</strong> Park View or Mulberry Woodside have offered every applicant a place for years. A banker in slot six is what stands between you and being allocated a school you never chose.</li>
+    <li><strong>Visit before you rank.</strong> Autumn open evenings run September–October; a school's feel routinely overturns its numbers.</li>
+    <li><strong>Check the sibling and faith fine print</strong> — an older sibling on roll in 2027 changes several of these verdicts outright.</li>
+  </ol>
+</section>
+
+<section class="method">
+  <h2>How to read the numbers</h2>
+  <p><strong>Progress 8 (P8)</strong> measures GCSE progress against pupils nationally who started from the same point: 0 is average, +0.3 means a third of a grade better in every subject. It is the fairest single measure, but small cohorts swing it — the whiskers show the 95% confidence range, and we show three years so one odd year can't mislead you. <strong>Attainment 8</strong> is raw GCSE points and mostly reflects intake, not teaching. <strong>Percentiles</strong> rank a school among all English state secondaries.</p>
+  <p><strong>Cut-off distances</strong> move every year — with sibling numbers, birth-rate dips and admission-number changes. Roughly a third to a half of places go to priority groups (EHCPs, looked-after children, siblings, staff) before distance is applied. Verdicts here compare five years of published cut-offs with your straight-line distance; councils measure from your exact address point, so treat anything within ±0.1&nbsp;mi of a cut-off as genuinely uncertain. Girls' schools apply only to daughters. Nothing on this page is a guarantee of a place.</p>
+  <p><strong>Not covered:</strong> independent schools (three sit within a mile), sixth-form-only colleges, and the 2027 admission arrangements, which schools may amend. Always verify criteria in each school's published policy before submitting your form.</p>
+</section>
+
+<footer class="src">
+  <h2>Sources</h2>
+  <p>School performance: DfE performance tables 2021-22 to 2023-24 &amp; pupil absence statistics · Ofsted inspection outcomes &amp; 2025 report cards · GIAS school registry. Admissions: <a href="https://haringey.gov.uk/schools-learning/schools/school-admissions/how-school-place-offers-were-made/cutoff-distance-school-last-child-offered-place/secondary-schools-distance-school-last-child-offered-place-national-offer-day">Haringey cut-off distances 2022–26</a> · <a href="https://education.hackney.gov.uk/sites/default/files/document/Applications%20and%20Offers%20at%20Hackney%20Secondary%20Schools%202018-26.pdf">Hackney applications &amp; offers 2018–26</a> · <a href="https://www.islington.gov.uk/children-and-families/schools/apply-for-a-school-place/school-admissions-information/cut-off-distance-maps">Islington cut-off distances</a>. Geocoding: postcodes.io. Distances are straight-line from the postcode centroid.</p>
+  <p class="fine">Sample report generated for product testing. © 2026 — not affiliated with any local authority or the Department for Education.</p>
+</footer>
+</div></body></html>
